@@ -1,4 +1,4 @@
-source $config_path/05_diff_taxa_analysis_config.sh
+#source $config_path/05_diff_taxa_analysis_config.sh
 subdir=$work_dir/05_diff_taxa_analysis
 mkdir -p $subdir
 
@@ -47,7 +47,7 @@ sh $genus_level_outdir/work.sh
 sh $otu_diff_outdir/work.sh" >$subdir/work.sh
 
 if [ -z $job_name ];then
-	echo -e "qsub -cwd -l vf=10G -q all.q -e $sub_dir/work.e -o $sub_dir/work.o $sub_dir/work.sh" >$work_dir/05_diff_taxa_analysis.qsub
+	echo -e "qsub -cwd -l vf=10G -q all.q -e $subdir/work.e -o $subdir/work.o $subdir/work.sh" >$work_dir/05_diff_taxa_analysis.qsub
 else
-	echo -e "qsub -cwd -l vf=10G -q all.q -N $job_name\_05 -e $sub_dir/work.e -o $sub_dir/work.o $sub_dir/work.sh" >$work_dir/05_diff_taxa_analysis.qsub
+	echo -e "qsub -cwd -l vf=10G -q all.q -N $job_name\_05 -e $subdir/work.e -o $subdir/work.o $subdir/work.sh" >$work_dir/05_diff_taxa_analysis.qsub
 fi

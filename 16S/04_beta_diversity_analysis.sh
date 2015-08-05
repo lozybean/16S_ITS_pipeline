@@ -1,4 +1,4 @@
-source $config_path/04_diversity_analysis_config.sh
+#source $config_path/04_diversity_analysis_config.sh
 beta_sub_dir=$work_dir/04_diversity_analysis/beta_diff
 mkdir -p $beta_sub_dir
 
@@ -11,8 +11,8 @@ echo \
 cp $work_dir/04_diversity_analysis/rep_phylo.tre $beta_sub_dir/rep_phylo.tre
 beta_diversity.py -i $otu_biom -o $wf_bdiv_outdir -t $beta_sub_dir/rep_phylo.tre
 $script_04_Draw_beta_heatmap -m $map_file -w $wf_bdiv_outdir/weighted_unifrac_otu_table.txt -u $wf_bdiv_outdir/unweighted_unifrac_otu_table.txt -g D -d $heatmap_outdir
-$script_04_beta_boxplot $wf_bdiv_outdir/weighted_unifrac_dm.txt $group_file
-$script_04_beta_boxplot $wf_bdiv_outdir/unweighted_unifrac_dm.txt $group_file
+$script_04_beta_boxplot $wf_bdiv_outdir/weighted_unifrac_otu_table.txt $group_file
+$script_04_beta_boxplot $wf_bdiv_outdir/unweighted_unifrac_otu_table.txt $group_file
 $script_04_beta_pca $wf_bdiv_outdir/weighted_unifrac_pc.txt $group_file
 $script_04_beta_pca $wf_bdiv_outdir/unweighted_unifrac_pc.txt $group_file" >$beta_sub_dir/work.sh
 

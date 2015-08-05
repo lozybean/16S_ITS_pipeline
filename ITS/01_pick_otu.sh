@@ -1,4 +1,4 @@
-source $config_path/01_pick_otu_config.sh
+#source $config_path/01_pick_otu_config.sh
 
 sub_dir=$work_dir/01_pick_otu
 mkdir -p $sub_dir

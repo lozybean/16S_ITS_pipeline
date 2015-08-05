@@ -1,4 +1,4 @@
-source $config_path/04_diversity_analysis_config.sh
+#source $config_path/04_diversity_analysis_config.sh
 alpha_sub_dir=$work_dir/04_diversity_analysis/alpha_diff
 mkdir -p $alpha_sub_dir
 

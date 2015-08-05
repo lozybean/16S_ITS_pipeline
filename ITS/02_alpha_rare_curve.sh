@@ -1,4 +1,4 @@
-source $config_path/02_alpha_rare_curve_config.sh
+#source $config_path/02_alpha_rare_curve_config.sh
 sub_dir=$work_dir/02_alpha_rare_curve
 mkdir -p $sub_dir
 

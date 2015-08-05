@@ -1,4 +1,4 @@
-source $config_path/03_otu_table_config.sh
+#source $config_path/03_otu_table_config.sh
 sub_dir=$work_dir/03_otu_table
 mkdir -p $sub_dir
 

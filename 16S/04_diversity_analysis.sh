@@ -1,4 +1,4 @@
-source $config_path/04_diversity_analysis_config.sh
+#source $config_path/04_diversity_analysis_config.sh
 sub_dir=$work_dir/04_diversity_analysis
 mkdir -p $sub_dir
 
@@ -12,12 +12,12 @@ source $pipeline_path/04_beta_diversity_analysis.sh
 
 if [ -z $job_name ];then
 	echo "\
-make_tree=\`qsub -cwd -l vf=10G -q all.q -e $sub_dir/work.e -o $sub_dir.work.o -terse $sub_dir/work.sh\`
+make_tree=\`qsub -cwd -l vf=10G -q all.q -e $sub_dir/work.e -o $sub_dir/work.o -terse $sub_dir/work.sh\`
 alpha_div=\`qsub -cwd -l vf=10G -q all.q -e $alpha_sub_dir/work.e -o $alpha_sub_dir/work.o -terse -hold_jid \$make_tree $alpha_sub_dir/work.sh\`
 beta_div=\`qsub -cwd -l vf=10G -q all.q -e $beta_sub_dir/work.e -o $beta_sub_dir/work.o -terse -hold_jid \$make_tree $beta_sub_dir/work.sh\`" >$work_dir/04_diversity_analysis.qsub
 else
     echo "\
-make_tree=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e $sub_dir/work.e -o $sub_dir.work.o -terse $sub_dir/work.sh\`
+make_tree=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e $sub_dir/work.e -o $sub_dir/work.o -terse $sub_dir/work.sh\`
 alpha_div=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e $alpha_sub_dir/work.e -o $alpha_sub_dir/work.o -terse -hold_jid \$make_tree $alpha_sub_dir/work.sh\`
 beta_div=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e $beta_sub_dir/work.e  -o $beta_sub_dir/work.o  -terse -hold_jid \$make_tree $beta_sub_dir/work.sh\`" >$work_dir/04_diversity_analysis.qsub
 fi
