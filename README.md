@@ -27,3 +27,8 @@ requirement:
 	may some other packages
 
 3. Perl
+
+4. LEfSe
+
+    get from : https://bitbucket.org/nsegata/lefse/get/default.zip
+    
