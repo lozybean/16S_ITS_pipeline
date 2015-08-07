@@ -7,15 +7,15 @@
 
 #Dependency Config [must be setted!]
 job_name=
-group_num=
 ITS_or_16S=
 work_dir=$(pwd)
 fna_file=$work_dir/$ITS_or_16S\_together.fna
 group_file=$work_dir/group.txt
+group_num=$((sort -u -k2 $group_file) | (wc -l))
 
 if [ -z $ITS_or_16S ] && [ $ITS_or_16S != '16S' ] && [ $ITS_or_16S != 'ITS' ]  ;then
-	echo 'you have to confirm the data type [ 16S or ITS ]'
-	exit
+    echo 'you have to confirm the data type [ 16S or ITS ]'
+    exit
 fi
 
 #{{{
@@ -43,7 +43,7 @@ pick_otu_summary=\$work_dir/01_pick_otu/sumOTUPerSample.txt " >$work_dir/before_
 
 echo "\
 # +++++++++++++++            02_alpha_rare_curve             +++++++++++++++++++++ #
-source \$config_path/02_alpha_rare_curve_config.sh								
+source \$config_path/02_alpha_rare_curve_config.sh                              
 
 #pick_otu_dir=\$work_dir/01_pick_otu  [ not in used ]
 #otu_all=\$pick_otu_dir/otus_all.txt
@@ -63,11 +63,11 @@ source \$config_path/02_alpha_rare_curve_config.sh
 #gg_imputed=/data_center_01/soft/greengenes/core_set_aligned.fasta.imputed
 #gg_lanemask=/data_center_01/soft/greengenes/lanemask_in_1s_and_0s
 
-source \$pipeline_path/02_alpha_rare_curve.sh									
-sh2=\$work_dir/02_alpha_rare_curve/work											
+source \$pipeline_path/02_alpha_rare_curve.sh                                   
+sh2=\$work_dir/02_alpha_rare_curve/work                                         
 
-# ++++++++++++++++		       03_otu_table                  +++++++++++++++++++++ #
-source \$config_path/03_otu_table_config.sh									
+# ++++++++++++++++             03_otu_table                  +++++++++++++++++++++ #
+source \$config_path/03_otu_table_config.sh                                 
 
 #pick_otu_dir=\$work_dir/01_pick_otu [ not in used ]
 #otu_all=\$pick_otu_dir/otus_all.txt
@@ -118,7 +118,7 @@ qsub1=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_01 -e \$sh1.e -o \$sh1.o -ter
 while [ ! -s \$pick_otu_summary ];
 do
         sleep 1m
-		echo 'waiting for picking otu  ...'
+        echo 'waiting for picking otu  ...'
 done
 source $work_dir/after_pick_otu_config.sh
 qsub2=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_02 -e \$sh2.e -o \$sh2.o -terse -hold_jid \$qsub1 \$sh2.sh\`
@@ -126,5 +126,14 @@ qsub3=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_03 -e \$sh3.e -o \$sh3.o -ter
 qsub4_1=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e \$sh4_1.e -o \$sh4_1.o -terse -hold_jid \$qsub3 \$sh4_1.sh\`
 qsub4_2=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e \$sh4_2.e -o \$sh4_2.o -terse -hold_jid \$qsub4_1 \$sh4_2.sh\`
 qsub4_3=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e \$sh4_3.e -o \$sh4_3.o -terse -hold_jid \$qsub4_1 \$sh4_3.sh\`
-qsub5=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_05 -e \$sh5.e -o \$sh5.o -terse -hold_jid \$qsub3 \$sh5.sh\`">$work_dir/pipeline.qsub
+qsub5=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_05 -e \$sh5.e -o \$sh5.o -terse -hold_jid \$qsub3 \$sh5.sh\`
+log=\$( (qstat -j \$qsub2,\$qsub3,\$qsub4_1,\$qsub4_2,\$qsub4_3,\$qsub5) );
+while [ -n \"\$log\" ];
+do
+    sleep 1m
+    echo 'waiting for all jobs done ...'
+done
+source \$pipeline_path/upload.sh \$ass_tax_method
+">$work_dir/pipeline.qsub
+
 #}}}

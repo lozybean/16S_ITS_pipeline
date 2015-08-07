@@ -6,7 +6,7 @@ echo "\
 cp $wf_taxa_outdir/*txt $subdir/
 cp $otu_table_profile $subdir/otu_table_otu.txt
 $script_05_otu_transL $subdir/otu_table_L2.txt $subdir/otu_table_L1.txt
-cat $subdir/otu_table_L1.txt $subdir/otu_table_L2.txt $subdir/otu_table_L3.txt $subdir/otu_table_L4.txt $subdir/otu_table_L5.txt $subdir/otu_table_L6.txt >$subdir/otu_table_all.txt
+$script_05_otu_table_cat $subdir/otu_table_L1.txt $subdir/otu_table_L2.txt $subdir/otu_table_L3.txt $subdir/otu_table_L4.txt $subdir/otu_table_L5.txt $subdir/otu_table_L6.txt >$subdir/otu_table_all.txt
 $script_05_otu_alllevel $subdir/otu_table_all.txt $group_file $subdir/otu_table_all.out.txt " >$subdir/prepare.sh
 
 all_level_outdir=$subdir/tax_all_level
@@ -40,11 +40,23 @@ $script_05_marker_tax $otu_diff_outdir/otu_table_otu.diff.marker.for_draw.xls $o
 $script_05_pca_diff -profile $otu_diff_outdir/otu_table_otu.diff.marker.xls -group $group_file
 $script_05_diff_tax_heatmap $otu_diff_outdir/otu_table_otu.diff.marker.xls $group_file 10 900 " >$otu_diff_outdir/work.sh
 
+LEfSe_outdir=$subdir/LEfSe
+mkdir -p $LEfSe_outdir
+echo "\
+cp $subdir/otu_table_all.out.txt $LEfSe_outdir/  
+format_input.py $LEfSe_outdir/otu_table_all.out.txt $LEfSe_outdir/LDA.in -c 1 -u 2 -o 1000000
+run_lefse.py $LEfSe_outdir/LDA.in $LEfSe_outdir/LDA.res
+plot_res.py $LEfSe_outdir/LDA.res $LEfSe_outdir/LDA.png
+plot_cladogram.py $LEfSe_outdir/LDA.res $LEfSe_outdir/LDA.cladogram.png --format png
+mkdir $LEfSe_outdir/biomarkers_raw_images
+plot_features.py $LEfSe_outdir/LDA.in $LEfSe_outdir/LDA.res $LEfSe_outdir/biomarkers_raw_images" > $LEfSe_outdir/work.sh
+
 echo "\
 sh $subdir/prepare.sh
 sh $all_level_outdir/work.sh
 sh $genus_level_outdir/work.sh
-sh $otu_diff_outdir/work.sh" >$subdir/work.sh
+sh $otu_diff_outdir/work.sh
+sh $LEfSe_outdir/work.sh" >$subdir/work.sh
 
 if [ -z $job_name ];then
 	echo -e "qsub -cwd -l vf=10G -q all.q -e $subdir/work.e -o $subdir/work.o $subdir/work.sh" >$work_dir/05_diff_taxa_analysis.qsub

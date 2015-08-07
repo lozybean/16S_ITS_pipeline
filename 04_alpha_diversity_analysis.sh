@@ -16,17 +16,13 @@ for alpha in $alphas
 do
 	$script_04_alpha_diff -alpha $alpha_div_collated_outdir/\$alpha.txt -group $group_file -gnum $group_num
 done
-if [ -f $alpha_div_collated_outdir/alpha_all.txt ];then
-	rm $alpha_div_collated_outdir/alpha_all.txt
-fi
-head -n 1 $alpha_div_collated_outdir/\$alpha.txt >$alpha_div_collated_outdir/alpha_all.txt
-tail -n 1 $alpha_div_collated_outdir/*.w.txt >>$alpha_div_collated_outdir/alpha_all.txt
+cat $alpha_div_collated_outdir/*.w.txt >$alpha_div_collated_outdir/all_alpha_w.txt
+sort $alpha_div_collated_outdir/all_alpha_w.txt | uniq -d  >$alpha_div_collated_outdir/alpha_all.txt
+sort $alpha_div_collated_outdir/all_alpha_w.txt | uniq -u >>$alpha_div_collated_outdir/alpha_all.txt
 awk '{for(j=1;j<=NF;j++)a[j]=sprintf(\"%s%s\\t\",a[j],\$j)}END{for(j=1;j<=NF;j++)printf \"%s\\n\",a[j]}' $alpha_div_collated_outdir/alpha_all.txt >$alpha_div_collated_outdir/alpha_statistics.txt
-if [ -f $alpha_div_collated_outdir/alpha.markers.txt ];then
-	rm $alpha_div_collated_outdir/alpha.markers.txt
-fi
-head -n 1 $alpha_div_collated_outdir/\$alpha.marker.txt >$alpha_div_collated_outdir/alpha.markers.txt
-tail -n 1 $alpha_div_collated_outdir/*.marker.txt >>$alpha_div_collated_outdir/alpha.markers.txt" >$alpha_sub_dir/work.sh
+cat $alpha_div_collated_outdir/*.marker.txt >$alpha_div_collated_outdir/all_alpha_marker.txt
+sort $alpha_div_collated_outdir/all_alpha_marker.txt | uniq -d  >$alpha_div_collated_outdir/alpha.markers.txt
+sort $alpha_div_collated_outdir/all_alpha_marker.txt | uniq -u >>$alpha_div_collated_outdir/alpha.markers.txt" >$alpha_sub_dir/work.sh
 
 [ -f $alpha_sub_dir/work.e ] && rm $alpha_sub_dir/work.e
 [ -f $alpha_sub_dir/work.o ] && rm $alpha_sub_dir/work.o

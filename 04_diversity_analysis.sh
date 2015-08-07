@@ -10,7 +10,7 @@ make_phylogeny.py -i $sub_dir/filtered_alignment/rep_set_aligned_pfiltered.fasta
 elif [ $ITS_or_16S = 'ITS' ]; then
     echo \
 "align_seqs.py -i $rep_set -m $align_seq_method -o $sub_dir/$align_seq_method\_alignment
-make_phylogeny.py -i $sub_dir/$align_seq_method\_alignment/rep_set_aligned_pfiltered.fasta -o $sub_dir/rep_phylo.tre" >$sub_dir/work.sh
+make_phylogeny.py -i $sub_dir/$align_seq_method\_alignment/rep_set_aligned.fasta -o $sub_dir/rep_phylo.tre" >$sub_dir/work.sh
 else
     echo "the data type must be 16S or ITS ! "
     exit

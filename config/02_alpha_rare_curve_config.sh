@@ -22,8 +22,4 @@ seqs_all=$pick_otu_dir/seqs_all.fa
 alpha_metrics="chao1,observed_species,PD_whole_tree,shannon,simpson,goods_coverage"
 alphas=${alpha_metrics//,/ }
 
-awk '{print $2}' $pick_otu_dir/sumOTUPerSample.txt | sort -n | tail -n 1 > /tmp/file
-while read out
-do
-    maximum=$out
-done < /tmp/file
+maximum=$( (awk '{print $2}' $pick_otu_dir/sumOTUPerSample.txt) | (sort -n) | (tail -n 1))

@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
-die "perl $0 <otu.txt><assign.txt>" unless(@ARGV==2); 
-my ($otu0,$otuid)=@ARGV;
+die "perl $0 <otu.txt><assign.txt><cutoff>" unless(@ARGV==3); 
+my ($otu0,$otuid,$cutoff)=@ARGV;
 my @otu=split/\./,$otu0;
 my $otuname=shift @otu;
 my %num;
@@ -31,12 +31,30 @@ while(<IN>){
 		$num{$tab[0]}++;
         }
 	$per{$tab[0]}=$num{$tab[0]}/$allnum;
-        if($per{$tab[0]}>0.5){$group{">0.5"}++;}
-        if($per{$tab[0]}>0.6){$group{">0.6"}++;}
-        if($per{$tab[0]}>0.7){$group{">0.7"}++;}
-        if($per{$tab[0]}>0.8){$group{">0.8"}++;}#print OUT "$tab[0]\t$taxnum{$tab[0]}\n";}
-        if($per{$tab[0]}>0.9){$group{">0.9"}++;}
-        if($per{$tab[0]}==1){$group{"==1"}++;print OUT "$tab[0]\t$taxnum{$tab[0]}\n";}
+        if($per{$tab[0]}>0.5){
+            $group{">0.5"}++;
+            print OUT "$tab[0]\t$taxnum{$tab[0]}\n" if $cutoff eq '0.5'; 
+        }
+        if($per{$tab[0]}>0.6){
+            $group{">0.6"}++;
+            print OUT "$tab[0]\t$taxnum{$tab[0]}\n" if $cutoff eq '0.6';
+        }
+        if($per{$tab[0]}>0.7){
+            $group{">0.7"}++;
+            print OUT "$tab[0]\t$taxnum{$tab[0]}\n" if $cutoff eq '0.7';
+        }
+        if($per{$tab[0]}>0.8){
+            $group{">0.8"}++;
+            print OUT "$tab[0]\t$taxnum{$tab[0]}\n" if $cutoff eq '0.8';
+        }
+        if($per{$tab[0]}>0.9){
+            $group{">0.9"}++; 
+            print OUT "$tab[0]\t$taxnum{$tab[0]}\n" if $cutoff eq '0.9';
+        }
+        if($per{$tab[0]}==1){
+            $group{"==1"}++;
+            print OUT "$tab[0]\t$taxnum{$tab[0]}\n" if $cutoff eq '1';
+        }
 }
 close IN;
 for my $g(sort {$group{$b} <=> $group{$a}} keys %group){

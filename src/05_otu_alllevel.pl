@@ -3,9 +3,23 @@ die "perl $0 <otu_all.txt><group><out>" unless(@ARGV==3);
 my ($otu0,$group,$out)=@ARGV;
 my @otu=split/\./,$otu0;
 my $otuname=shift @otu;
-system("sort $otu0|uniq -u  >$otuname\_su.txt");
-system("sort $otu0|uniq -d  >$otuname\_head.txt");
+
+open IN,$otu0 or die $!;
+open OUT,">$otuname\_filt.txt";
+while(<IN>){
+    chomp;
+    s/\s+$//;
+    my @tabs = split /\t/;
+    next if @tabs==1;
+    print OUT "$_\n";
+}
+close IN;
+close OUT;
+
+system("sort $otuname\_filt.txt|uniq -u  >$otuname\_su.txt");
+system("sort $otuname\_filt.txt|uniq -d  >$otuname\_head.txt");
 system("cat $otuname\_head.txt $otuname\_su.txt>$otuname.trans.txt");
+
 open IN,$group or die $!;
 my %group;
 while(<IN>){
@@ -37,4 +51,3 @@ while(<IN>){
 }
 close IN;
 close OUT;
-system("rm -f $otuname\_head.txt $otuname\_su.txt");

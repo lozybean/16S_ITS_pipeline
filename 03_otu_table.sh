@@ -35,15 +35,16 @@ else
     exit
 fi
 
-echo \
-"make_otu_table.py -i $otu_downsize -t $ass_tax_outdir/rep_set_tax_assignments.txt -o $otu_biom
+echo "\
+$filt_rep_set_tax_ass_script $ass_tax_outdir/rep_set_tax_assignments.txt $ass_tax_outdir/rep_set_tax_assignments_filt.txt
+make_otu_table.py -i $otu_downsize -t $rep_set_tax_ass_file -o $otu_biom
 summarize_taxa.py -i $otu_biom -o $wf_taxa_outdir
 biom summarize-table -i $otu_biom -o $sub_dir/otu_table_summary.txt
 biom convert -i $otu_biom -o $otu_txt --to-tsv
-$script_03_core_otu $otu_txt $ass_tax_outdir/rep_set_tax_assignments.txt
+$script_03_core_otu $otu_txt $rep_set_tax_ass_file 1
 $script_03_get_otu_uniform $otu_txt
 $script_03_otu_pca $otu_uniform $group_file
-$script_03_otu_statistics $ass_tax_outdir/rep_set_tax_assignments.txt $otu_downsize
+$script_03_otu_statistics $rep_set_tax_ass_file $otu_downsize
 $script_03_tax_heatmap $wf_taxa_outdir/otu_table_L6.txt $group_file
 $script_03_venn -otu $otu_txt -group $group_file -gnum $group_num
 $script_03_tax_stars $wf_taxa_outdir/otu_table_L6.txt $group_file

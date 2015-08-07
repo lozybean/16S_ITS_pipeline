@@ -13,8 +13,8 @@ beta_diversity.py -i $otu_biom -o $wf_bdiv_outdir -t $beta_sub_dir/rep_phylo.tre
 $script_04_Draw_beta_heatmap -m $map_file -w $wf_bdiv_outdir/weighted_unifrac_otu_table.txt -u $wf_bdiv_outdir/unweighted_unifrac_otu_table.txt -g D -d $heatmap_outdir
 $script_04_beta_boxplot $wf_bdiv_outdir/weighted_unifrac_otu_table.txt $group_file
 $script_04_beta_boxplot $wf_bdiv_outdir/unweighted_unifrac_otu_table.txt $group_file
-$script_04_beta_pca $wf_bdiv_outdir/weighted_unifrac_pc.txt $group_file
-$script_04_beta_pca $wf_bdiv_outdir/unweighted_unifrac_pc.txt $group_file" >$beta_sub_dir/work.sh
+$script_04_beta_pcoa $wf_bdiv_outdir/weighted_unifrac_otu_table.txt $group_file
+$script_04_beta_pcoa $wf_bdiv_outdir/unweighted_unifrac_otu_table.txt $group_file" >$beta_sub_dir/work.sh
 
 
 [ -f $beta_sub_dir/work.e ] && rm $beta_sub_dir/work.e

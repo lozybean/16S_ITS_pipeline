@@ -29,6 +29,7 @@ exit 1;
 my @profile=split/\./,$profile;
 my $otuname=shift @profile;
 open IN,$profile || die $!;
+<IN>;
 open OUT,">$otuname.t.txt"|| die $!;
 my $header=<IN>;
 print OUT $header;

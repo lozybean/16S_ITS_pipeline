@@ -16,11 +16,7 @@ if [ -z $group_num ];then
 fi
 
 
-awk '{print $7}' $pick_otu_dir/sumOTUPerSample.txt | sort -n | head -n 2 |tail -n 1 > /tmp/file
-while read out
-do
-    minimum=$out
-done < /tmp/file
+minimum=$( (awk '{print $7}' $pick_otu_dir/sumOTUPerSample.txt) | (sort -n) | (head -n 2) | (tail -n 1) )
 
 otu_table_dir=$work_dir/03_otu_table
 rep_set=$otu_table_dir/rep_set.fna
