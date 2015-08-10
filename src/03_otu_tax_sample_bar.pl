@@ -121,8 +121,8 @@ gg_normal + geom_bar(position = "stack",stat="identity")+theme(axis.text=element
 dev.off()
 RTXT
 
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.1.2/bin/R CMD BATCH $prefix.R $prefix.R.Rout");
-system("/usr/bin/convert -density 300 $prefix.pdf $prefix.png");
+system("Rscript  $prefix.R $prefix.R.Rout");
+system("convert -density 300 $prefix.pdf $prefix.png");
 #system("rm -f $prefix.R $prefix.R.Rout");
 
 

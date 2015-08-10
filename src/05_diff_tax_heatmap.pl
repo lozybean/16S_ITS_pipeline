@@ -27,7 +27,6 @@ col2=colorRampPalette(brewer.pal(9, "YlGnBu")[3:7])($col2)
 col=c(col1,col2)
 pheatmap(data0,color=col,annotation=group,cluster_rows = F, cluster_cols = F)
 RTXT
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.0.1/bin/Rscript $otuname.heatmap.R --vanilla");
-system("/usr/bin/convert $otuname.diff.marker.heatmap.pdf $otuname.diff.marker.heatmap.png");
-system("rm -f  $otuname.heatmap.R ");
+system("Rscript $otuname.heatmap.R");
+system("convert $otuname.diff.marker.heatmap.pdf $otuname.diff.marker.heatmap.png");
 

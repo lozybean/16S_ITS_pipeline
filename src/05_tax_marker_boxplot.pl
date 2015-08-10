@@ -115,7 +115,7 @@ p+geom_boxplot(outlier.size=1)+theme(axis.text=element_text(colour="black"),axis
 dev.off()
 RTXT
 
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.0.1/bin/R CMD BATCH $prefix.marker.boxplot.R $prefix.marker.boxplot.R.Rout");
-system("/usr/bin/convert -density 300 $prefix.marker.boxplot.pdf $prefix.marker.boxplot.png");
+system("R CMD BATCH $prefix.marker.boxplot.R $prefix.marker.boxplot.R.Rout");
+system("convert -density 300 $prefix.marker.boxplot.pdf $prefix.marker.boxplot.png");
 
 

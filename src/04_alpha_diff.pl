@@ -97,7 +97,7 @@ colnames(statsKWs)<- c("alphaname",meanname,"pvalue")
 write.table(statsKWs,"$alphaname.marker.txt",row.names=F,quote=F,sep="\\t")
 RTXT
 
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.1.2/bin/R CMD BATCH $alphaname.wilcox.diff.R $alphaname.wilcox.diff.R.out");
-system("/usr/bin/convert $alphaname.boxplot.pdf $alphaname.boxplot.png");
+system("R CMD BATCH $alphaname.wilcox.diff.R $alphaname.wilcox.diff.R.out");
+system("convert $alphaname.boxplot.pdf $alphaname.boxplot.png");
 system("rm -f   $alphaname.head.txt $alphaname.tail.txt $alphaname.alpha.txt $alphaname.kruskalstats.R");# $alphaname.kruskalstats.R.out");
 

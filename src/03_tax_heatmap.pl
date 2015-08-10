@@ -73,7 +73,7 @@ cols=c(col3,col4)
 #pheatmap(data,color=col,annotation=group,cluster_rows = F,clustering_distance_cols = function(x) hclust(x,method='complete'))
 heatmap.2(as.matrix(data),col=col,na.rm=T,distfun=function(x) dist(x),hclustfun=function(x) hclust(x,method='complete'),dendrogram="col",Rowv=F,labRow=rows,ColSideColors=colors,cexRow=1.16,offsetRow=0.1,cexCol=1.4,symkey=FALSE,density.info="none",trace="none",key=F,margins=c(8,10),keysize=0.3)
 RTXT
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.1.2/bin/Rscript $otuname.heatmap.R --vanilla");
-system("/usr/bin/convert $otuname.heatmap.pdf $otuname.heatmap.png");
+system("Rscript $otuname.heatmap.R");
+system("convert $otuname.heatmap.pdf $otuname.heatmap.png");
 #system("rm -f  $otuname.heatmap.R ");
 

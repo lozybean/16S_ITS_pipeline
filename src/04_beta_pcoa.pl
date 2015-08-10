@@ -38,6 +38,6 @@ plot(X.dudi\$li,col=colors,pch=15,cex=1.2,xlab=paste("PCOA1(",con[1],"%)",sep=""
 legend("topleft",g_order,col=gcols_order,pch=15,cex=1,bty="n",,horiz=T)
 
 RTXT
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.1.2/bin/R CMD BATCH $otuname.pcoa.R $otuname.pcoa.Rout");
-system("/usr/bin/convert $otuname.pcoaplot.pdf $otuname.pcoaplot.png");
+system("R CMD BATCH $otuname.pcoa.R $otuname.pcoa.Rout");
+system("convert $otuname.pcoaplot.pdf $otuname.pcoaplot.png");
 

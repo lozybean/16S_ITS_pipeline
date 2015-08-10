@@ -63,7 +63,7 @@ levels=g[,1]
 Y1\$time1=factor(Y1\$time1,levels)
 boxplot(pc1 ~ time1, data = Y1, col = gcols,horizontal=F,outline=T,cex.lab=1.6,cex.axis=1.2,yaxt="n")
 RTXT
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.1.2/bin/R CMD BATCH $otuname.pca.R $otuname.pca.Rout");
-system("/usr/bin/convert $otuname.pcaplot.pdf $otuname.pcaplot.png");
+system("R CMD BATCH $otuname.pca.R $otuname.pca.Rout");
+system("convert $otuname.pcaplot.pdf $otuname.pcaplot.png");
 #system("rm -f  $otuname.pca.R ");
 

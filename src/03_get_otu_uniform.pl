@@ -26,7 +26,7 @@ write.table(X_uniform,"$otuname\_profile1.txt",sep="\\t",quote=F,row.names=T,col
 RTXT
 
 
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.0.1/bin/Rscript $otuname.R --vanilla");
+system("Rscript $otuname.R");
 #system("rm -f $otuname.removefirst.txt");
 open IN,"$otuname\_profile1.txt" || die "can not open $otuname\_profile1.txt\n";
 open OUT,">$otuname\_profile.txt" ||die $!;

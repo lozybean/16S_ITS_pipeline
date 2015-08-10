@@ -67,6 +67,6 @@ palette("default")
 dev.off()
 RTXT
 
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.1.2/bin/R CMD BATCH $otuname.stars.R $otuname.stars.Rout");
-system("/usr/bin/convert $otuname.stars.pdf $otuname.stars.png");
+system("Rscript $otuname.stars.R $otuname.stars.Rout");
+system("$otuname.stars.pdf $otuname.stars.png");
 

@@ -166,7 +166,7 @@ R
 	close RS;
 }
 
-`/data_center_01/home/NEOLINE/wuchunyan/software/R/R-3.0.1/bin/Rscript $dir/Beta_diversity_heatmap.r`;
+`Rscript $dir/Beta_diversity_heatmap.r`;
 
 
 #---------------------------------- sub programm 1-------------------------#

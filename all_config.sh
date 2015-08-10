@@ -43,6 +43,7 @@ script_03_tax_stars=$script_path/03_tax_stars.pl
 script_03_venn=$script_path/03_venn.pl
 script_03_otu_tax_sample_bar=$script_path/03_otu_tax_sample_bar.pl
 script_03_otu_tax_group_bar=$script_path/03_otu_tax_group_bar.pl
+script_03_otu_specaccum=$script_path/03_otu_specaccum.pl
 
 # alpha/beta diff script
 script_04_alpha_diff=$script_path/04_alpha_diff.pl

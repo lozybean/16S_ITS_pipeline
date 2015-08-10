@@ -41,6 +41,7 @@ filter_alignment.py -i $align_seq_outdir/rep_set_aligned.fasta -m $gg_lanemask -
 elif [ $ITS_or_16S = 'ITS' ]; then
     echo "\
 pick_rep_set.py -i $otu_all -f $seqs_all -o $rep_set -l $pick_rep_log -m $pick_rep_method
+mkdir -p $ass_tax_outdir
 $java -Xmx1g -jar $RDPtools -g fungalits_unite -c 0.8 -o $ass_tax_outdir/rep_set_tax_assignments_classifier.txt $rep_set
 $transform_rdp_result2qiimeform_script $ass_tax_outdir/rep_set_tax_assignments_classifier.txt 0.8 $ass_tax_outdir/rep_set_tax_assignments.txt ITS
 make_otu_table.py -i $otu_all -t $ass_tax_outdir/rep_set_tax_assignments.txt -o $otu_biom

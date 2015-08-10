@@ -5,7 +5,6 @@ mkdir -p $alpha_sub_dir
 wf_arare_outdir=$alpha_sub_dir/wf_arare_$minimum
 alpha_div_collated_outdir=$wf_arare_outdir/alpha_div_collated
 
-
 echo "\
 cp $work_dir/04_diversity_analysis/rep_phylo.tre $alpha_sub_dir/
 mkdir -p $wf_arare_outdir
@@ -23,6 +22,7 @@ awk '{for(j=1;j<=NF;j++)a[j]=sprintf(\"%s%s\\t\",a[j],\$j)}END{for(j=1;j<=NF;j++
 cat $alpha_div_collated_outdir/*.marker.txt >$alpha_div_collated_outdir/all_alpha_marker.txt
 sort $alpha_div_collated_outdir/all_alpha_marker.txt | uniq -d  >$alpha_div_collated_outdir/alpha.markers.txt
 sort $alpha_div_collated_outdir/all_alpha_marker.txt | uniq -u >>$alpha_div_collated_outdir/alpha.markers.txt" >$alpha_sub_dir/work.sh
+
 
 [ -f $alpha_sub_dir/work.e ] && rm $alpha_sub_dir/work.e
 [ -f $alpha_sub_dir/work.o ] && rm $alpha_sub_dir/work.o

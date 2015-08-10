@@ -49,7 +49,7 @@ run_lefse.py $LEfSe_outdir/LDA.in $LEfSe_outdir/LDA.res
 plot_res.py $LEfSe_outdir/LDA.res $LEfSe_outdir/LDA.png
 plot_cladogram.py $LEfSe_outdir/LDA.res $LEfSe_outdir/LDA.cladogram.png --format png
 mkdir $LEfSe_outdir/biomarkers_raw_images
-plot_features.py $LEfSe_outdir/LDA.in $LEfSe_outdir/LDA.res $LEfSe_outdir/biomarkers_raw_images" > $LEfSe_outdir/work.sh
+plot_features.py $LEfSe_outdir/LDA.in $LEfSe_outdir/LDA.res $LEfSe_outdir/biomarkers_raw_images/" > $LEfSe_outdir/work.sh
 
 echo "\
 sh $subdir/prepare.sh

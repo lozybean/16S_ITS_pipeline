@@ -45,23 +45,35 @@ my @guniq = grep { ! $seen{$_} ++ } @g;
 @guniq=sort{$a cmp $b}@guniq;
 #print @guniq;
 close IN;
+
 open IN,$otu or die $!;
+
+<IN>;
+chomp($_=<IN>);
+my @group_name;
+my @a = split /\t/;
+shift @a;
+foreach my $sample (@a){
+    push(@group_name,$group{$sample});
+}
+
 my %stat;
 while(<IN>){
 	chomp;
 	my @a = split /\t/;
 	my $b = shift @a;
-	my $num =substr($b,6,length($b)-6);
-	foreach my $name(@a){
-		$name=~/(\S+)\_\d+/;
-		my $g=$group{$1};
-		$stat{$g}.="$num\t";
-	}
+    $b =~ /(?:\S+?)(\d+)/;
+    my $num = $1;
+    print "$num\n";
+    for(my $i=0;$i<@a;$i++){
+        next if $a[$i] == 0;
+        $stat{$group_name[$i]} .= "$num\t";
+    }
 }
 close IN;
 open OUT,">$otuname.venn.txt" or die $!;
 foreach my $name(sort keys%stat){
-	chop $stat{$name};
+	chomp $stat{$name};
 	my @nums=split/\t/,$stat{$name};
 	my @uniq=&uniq(@nums);
 	@uniq=sort{$a <=>$b}@uniq;
@@ -151,4 +163,4 @@ venn.plot <- venn.diagram(
 RTXT
 }
 
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.1.2/bin/R CMD BATCH $otuname.venn.R $otuname.venn.R.Rout");
+system("R CMD BATCH $otuname.venn.R $otuname.venn.R.Rout");

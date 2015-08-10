@@ -103,5 +103,4 @@ statsKWs1=matrix(statsKWs0,ncol=ploc)
 colnames(statsKWs1)=colnames(statsKWs)
 write.table(statsKWs1,"$otuname.diff.marker.txt",row.names=F,quote=F,sep="\t")
 RTXT
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.0.1/bin/R CMD BATCH $otuname.wilcox.diff.R $otuname.wilcox.diff.Rout");
-system("rm -f $otuname.wilcox.diff.R ");
+system("R CMD BATCH $otuname.wilcox.diff.R $otuname.wilcox.diff.Rout");

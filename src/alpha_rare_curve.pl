@@ -52,5 +52,5 @@ for(i in 1:ncol(table))
 dev.off()
 RTXT
 
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.1.2/bin/R CMD BATCH $alphaname.rare.R $alphaname.rare.R.out");
-system("/usr/bin/convert $alphaname.rare.pdf $alphaname.rare.png");
+system("R CMD BATCH $alphaname.rare.R $alphaname.rare.R.out");
+system("convert $alphaname.rare.pdf $alphaname.rare.png");

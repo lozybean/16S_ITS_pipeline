@@ -128,6 +128,6 @@ gg_normal <-  ggplot(data = data, aes(x = Group, y=Percent, fill = Tax,order=Gro
 gg_normal + geom_bar(position = "stack",stat="identity")+theme(axis.text=element_text(colour="black"),axis.text.x  = element_text(angle=90, size=8,vjust=0.5))+scale_fill_discrete(name="$level",h=c(100,1000),c=100,l=60)+labs(title="",x = "",y = "")
 dev.off()
 RTXT
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.0.1/bin/R CMD BATCH $prefix.R $prefix.R.Rout");
-system("/usr/bin/convert -density 300 $prefix.pdf $prefix.png");
+system("Rscript $prefix.R $prefix.R.Rout");
+system("convert -density 300 $prefix.pdf $prefix.png");
 system("rm -f  $prefix.R $prefix.R.Rout");

@@ -57,7 +57,7 @@ ymax=max(X.dudi\$li[,2])
 plot(X.dudi\$li,col=colors,pch=20,cex=1.2,ylim=c(ymin,ymax+0.1),xlab=paste("PCA1(",con[1],"%)",sep=""),ylab=paste("PCA2(",con[2],"%)",sep=""),cex.axis=1.5,cex.lab=2)
 legend("topleft",A,col=gcols_order,pch=20,cex=1.5,bty="n",,horiz=T)
 RTXT
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.1.2/bin/R CMD BATCH $otuname.pca.R $otuname.pca.Rout");
-system("/usr/bin/convert $otuname.pcaplot.pdf $otuname.pcaplot.png");
+system("Rscript  $otuname.pca.R $otuname.pca.Rout");
+system("convert $otuname.pcaplot.pdf $otuname.pcaplot.png");
 #system("rm -f  $otuname.pca.R ");
 

@@ -8,7 +8,7 @@
 #Dependency Config [must be setted!]
 job_name=
 ITS_or_16S=
-work_dir=$(pwd)
+work_dir=$(pwd)/result
 fna_file=$work_dir/$ITS_or_16S\_together.fna
 group_file=$work_dir/group.txt
 group_num=$((sort -u -k2 $group_file) | (wc -l))
@@ -127,13 +127,14 @@ qsub4_1=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e \$sh4_1.e -o \$sh4_1.
 qsub4_2=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e \$sh4_2.e -o \$sh4_2.o -terse -hold_jid \$qsub4_1 \$sh4_2.sh\`
 qsub4_3=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e \$sh4_3.e -o \$sh4_3.o -terse -hold_jid \$qsub4_1 \$sh4_3.sh\`
 qsub5=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_05 -e \$sh5.e -o \$sh5.o -terse -hold_jid \$qsub3 \$sh5.sh\`
-log=\$( (qstat -j \$qsub2,\$qsub3,\$qsub4_1,\$qsub4_2,\$qsub4_3,\$qsub5) );
+log='there still have some jobs to do'
 while [ -n \"\$log\" ];
 do
     sleep 1m
     echo 'waiting for all jobs done ...'
+    log=\$(qstat -j \$qsub2,\$qsub3,\$qsub4_1,\$qsub4_2,\$qsub4_3,\$qsub5);
 done
-source \$pipeline_path/upload.sh \$ass_tax_method
+source \$pipeline_path/upload.sh
 ">$work_dir/pipeline.qsub
 
 #}}}

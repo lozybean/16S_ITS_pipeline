@@ -12,6 +12,8 @@ otu_uniform=$sub_dir/otu_table_profile.txt
 wf_taxa_outdir=$sub_dir/wf_taxa_summary
 sample_bar_outdir=$wf_taxa_outdir/bar_plot
 group_bar_outdir=$wf_taxa_outdir/bar_plot_group
+rank_abundance_outdir=$sub_dir/Rank_Abundance
+specaccum_outdir=$sub_dir/specaccum
 
 mkdir -p $sample_bar_outdir
 mkdir -p $group_bar_outdir
@@ -54,7 +56,14 @@ for i in 2 3 4 5 6
 do
 	$script_03_otu_tax_sample_bar -input $wf_taxa_outdir/otu_table_L\$i.txt -sample $group_file -prefix $sample_bar_outdir/otu_table_L\$i -level \$i
 	$script_03_otu_tax_group_bar -input $wf_taxa_outdir/otu_table_L\$i.txt -group $group_file -prefix $group_bar_outdir/otu_table_group_L\$i -level \$i
-done " >>$sub_dir/work.sh
+done 
+### rank_abundance
+mkdir -p $rank_abundance_outdir
+plot_rank_abundance_graph.py -i $otu_biom -s '*' -o $rank_abundance_outdir/all_plot.pdf --no_legend
+convert $rank_abundance_outdir/all_plot.pdf $rank_abundance_outdir/all_plot.png    
+### specaccum
+mkdir -p $specaccum_outdir
+$script_03_otu_specaccum $otu_txt $specaccum_outdir  " >>$sub_dir/work.sh
 
 [ -f $sub_dir/work.e ] && rm $sub_dir/work.e
 [ -f $sub_dir/work.o ] && rm $sub_dir/work.o

@@ -47,6 +47,6 @@ dev.off()
 #legend("topleft",A,col=gcols_order,pch=20,cex=1.5,bty="n",,horiz=T)
 #dev.off()
 RTXT
-system("/data_center_01/home/NEOLINE/wuleyun/wuly/R-3.1.2/bin/R CMD BATCH $distname.boxplot.R $distname.boxplot.Rout");
-system("/usr/bin/convert $distname.boxplot.pdf $distname.boxplot.png");
+system("R CMD BATCH $distname.boxplot.R $distname.boxplot.Rout");
+system("convert $distname.boxplot.pdf $distname.boxplot.png");
 
