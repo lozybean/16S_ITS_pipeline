@@ -20,7 +20,10 @@ readnumber = as.numeric(as.character(table[,2]))
 iteration = max(unique(as.numeric(as.character(table[,3])))) + 1
 table = table[,-c(1, 2, 3)]
 if("$choice" == "Y"){
-group=group[colnames(table),1]}else{group=colnames(table)}
+    group=group[colnames(table),1]
+}else{
+    group=colnames(table)
+}
 group=as.data.frame(group)
 rownames(group)=colnames(table)
 colors=labels2colors(group)
@@ -30,7 +33,9 @@ gcols=unique(colors)
 gcols_order=gcols[order(g)]
 ymax=max(as.numeric(as.character(table[table != "n/a"])))
 plot(0,0,xlim=c(0,max(readnumber)+1800),ylim=c(0,ymax),type="n",xlab="reads",ylab="$alphabase",cex.lab=1.4)
-if("$choice" == "N"){legend("topright",legend=g_order,col=gcols_order,seg.len=1.5,lwd=1.6,cex=0.8)}
+if("$choice" == "N"){
+    legend("topright",legend=g_order,col=gcols_order,seg.len=1.5,lwd=1.6,cex=0.8)
+}
 otu <- function(reads, vmax, km){
   vmax * reads / (km + reads)
 }

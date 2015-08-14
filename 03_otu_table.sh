@@ -21,12 +21,12 @@ mkdir -p $group_bar_outdir
 echo "\
 [ -f $otu_txt ] && rm $otu_txt
 [ -f $sub_dir/otu_table_summary.txt ] && rm $sub_dir/otu_table_summary.txt
-$sample_downsize_script $otu_all $minimum Y $otu_downsize
+$sample_downsize_script $otu_all $group_file $minimum $if_remain_small_size $otu_downsize
 $otus2fa_script $otu_downsize $seqs_all $seq_downsize
 pick_rep_set.py -i $otu_downsize -f $seq_downsize -o $sub_dir/rep_set.fna -l $sub_dir/pick_rep_set_log -m $pick_rep_method " > $sub_dir/work.sh
 
 if [ $ITS_or_16S = '16S' ]; then
-    echo "\assign_taxonomy.py -i $sub_dir/rep_set.fna -m $ass_tax_method -r $gg_ref -t $gg_tax -o $ass_tax_outdir" >> $sub_dir/work.sh
+    echo "assign_taxonomy.py -i $sub_dir/rep_set.fna -m $ass_tax_method -r $gg_ref -t $gg_tax -o $ass_tax_outdir" >> $sub_dir/work.sh
 elif [ $ITS_or_16S = 'ITS' ]; then
     echo "\
 mkdir -p $ass_tax_outdir

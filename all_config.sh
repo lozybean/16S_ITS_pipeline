@@ -16,12 +16,17 @@ gg_imputed=/data_center_01/soft/greengenes/core_set_aligned.fasta.imputed
 gg_lanemask=/data_center_01/soft/greengenes/lanemask_in_1s_and_0s
 
 #software
+
+#set python environment
+PYTHONPATH=''
+PATH=/data_center_01/home/liangzb/.pyenv/versions/2.7.10/bin:$PATH
+
 usearch=/home/snowflake/local/bin/usearch7.0.1090_i86linux32
 java=/home/snowflake/softwares/jdk1.8.0_25/bin/java
 RDPtools=/home/snowflake/softwares/RDP-classifier/RDPTools/classifier/dist/classifier.jar
 transform_rdp_result2qiimeform_script=$script_path/transform_rdp_result2qiimeform.pl
 ## LEfSe config
-export PATH=/data_center_01/home/NEOLINE/liangzebin/soft/LEfSe/nsegata-lefse-094f447691f0:$PATH
+PATH=/data_center_01/home/NEOLINE/liangzebin/soft/LEfSe/nsegata-lefse-094f447691f0:$PATH
 
 #script
 alpha_rare_curve_script=$script_path/alpha_rare_curve.pl
@@ -32,6 +37,8 @@ otus2fa_script=$script_path/otus2fa.pl
 sumOTUPerSample_script=$script_path/sumOTUPerSample.pl
 sample_downsize_script=$script_path/sample_downsize.pl
 filt_rep_set_tax_ass_script=$script_path/filt_rep_set_tax_ass.pl
+filter_by_group_script=$script_path/filter_by_group.pl
+filter_sum_txt_by_group_script=$script_path/filter_sum_txt_by_group.pl
 
 # otu table script
 script_03_core_otu=$script_path/03_core_otu.pl

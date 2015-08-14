@@ -16,11 +16,4 @@ if [ -z $group_num ];then
 fi
 
 pick_otu_dir=$work_dir/01_pick_otu
-otu_all=$pick_otu_dir/otus_all.txt
-seqs_all=$pick_otu_dir/seqs_all.fa
-pick_otu_summary=$pick_otu_dir/sumOTUPerSample.txt
-
-alpha_metrics="chao1,observed_species,PD_whole_tree,shannon,simpson,goods_coverage"
-alphas=${alpha_metrics//,/ }
-
-maximum=$( (awk '{print $2}' $pick_otu_summary) | (sort -n) | (tail -n 1))
+$pick_otu_dir/sumOTUPerSample.txt

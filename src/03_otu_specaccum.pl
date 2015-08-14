@@ -39,7 +39,7 @@ sp2 <- specaccum(X, "random")
 
 ## Fit Arrhenius models to all random accumulations
 mods <- fitspecaccum(sp2, "arrh")
-plot(mods, col="lightblue")
+plot(mods, col="lightblue",xlab='Number of samples sequenced',ylab='OTUs detected')
 boxplot(sp2, col = "yellow", border = "blue", lty=1, cex=0.3, add= TRUE)
 RTXT
 

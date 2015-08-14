@@ -6,6 +6,7 @@ single_path=$sub_dir/single
 mkdir -p $single_path
 
 derep_fa=$single_path/derep.fa
+pick_otu_summary=$sub_dir/sumOTUPerSample.txt
 
 echo \
 "$get_single_read_script -input $fna_file -out $single_path
@@ -16,7 +17,7 @@ $fasta_number_script $sub_dir/cluster_otus.fa denovo >$sub_dir/otus.fa
 $usearch -usearch_global $fna_file -db $sub_dir/otus.fa -strand plus -id 0.97 -uc $sub_dir/map.uc
 $uc2otutab_script $sub_dir/map.uc $sub_dir/otus_all.txt
 $otus2fa_script $sub_dir/otus_all.txt $fna_file $sub_dir/seqs_all.fa
-$sumOTUPerSample_script $fna_file $derep_fa $sub_dir/otus_all.txt $sub_dir/sumOTUPerSample.txt" >$sub_dir/work.sh
+$sumOTUPerSample_script $fna_file $derep_fa $sub_dir/otus_all.txt $pick_otu_summary" >$sub_dir/work.sh
 
 [ -f $sub_dir/work.e ] && rm $sub_dir/work.e
 [ -f $sub_dir/work.o ] && rm $sub_dir/work.o

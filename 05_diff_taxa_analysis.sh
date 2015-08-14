@@ -52,11 +52,11 @@ mkdir $LEfSe_outdir/biomarkers_raw_images
 plot_features.py $LEfSe_outdir/LDA.in $LEfSe_outdir/LDA.res $LEfSe_outdir/biomarkers_raw_images/" > $LEfSe_outdir/work.sh
 
 echo "\
-sh $subdir/prepare.sh
-sh $all_level_outdir/work.sh
-sh $genus_level_outdir/work.sh
-sh $otu_diff_outdir/work.sh
-sh $LEfSe_outdir/work.sh" >$subdir/work.sh
+prepare=qsub -cwd -l vf=5G -q all.q -terse $subdir/prepare.sh
+qsub -cwd -l vf=5G -q all.q -terse -hold_jid \$prepare $all_level_outdir/work.sh
+qsub -cwd -l vf=5G -q all.q -terse -hold_jid \$prepare $genus_level_outdir/work.sh
+qsub -cwd -l vf=5G -q all.q -terse -hold_jid \$prepare $otu_diff_outdir/work.sh
+qsub -cwd -l vf=5G -q all.q -terse -hold_jid \$prepare $LEfSe_outdir/work.sh" >$subdir/work.sh
 
 if [ -z $job_name ];then
 	echo -e "qsub -cwd -l vf=10G -q all.q -e $subdir/work.e -o $subdir/work.o $subdir/work.sh" >$work_dir/05_diff_taxa_analysis.qsub
