@@ -62,11 +62,11 @@ palette(rainbow(12, s = 0.6, v = 0.75))
 sample_num=nrow(group)
 pdf("$otuname.stars.pdf",18,26)
 par(mar=c(2.1,0,4.1,10.1))
-stars(t(X2), labels=colnames(X2),len = 1,ncol=6,key.loc = c(17, 2),main = "$main", draw.segments = TRUE)
+stars(t(X2), labels=colnames(X2),len = 1,ncol=6,key.loc = c(13, 2),main = "$main", draw.segments = TRUE)
 palette("default")
 dev.off()
 RTXT
 
 system("Rscript $otuname.stars.R $otuname.stars.Rout");
-system("$otuname.stars.pdf $otuname.stars.png");
+system("convert $otuname.stars.pdf $otuname.stars.png");
 

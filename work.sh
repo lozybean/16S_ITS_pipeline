@@ -84,6 +84,7 @@ do
         sleep 1m
         echo 'waiting for picking otu  ...'
 done
+[ "$if_have_subgroup" = 'Y' ]  && sh $work_dir/work_subgroups.sh 
 source $work_dir/02_alpha_rare_curve_config.sh
 qsub2=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_02 -e \$sh2.e -o \$sh2.o -terse \$sh2.sh\`
 source $work_dir/03_otu_table_config.sh

@@ -50,6 +50,9 @@ close IN;
 
 open IN,$input || die "can not open $input\n";
 my $head=<IN>;
+if($head=~/# Constructed from biom file/){
+    $head=<IN>;
+}
 chomp ($head);
 my @samples=split/\t/,$head;
 shift @samples;

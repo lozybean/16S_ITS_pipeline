@@ -15,13 +15,16 @@ if [ -z $group_num ];then
     exit
 fi
 
+alpha_metrics=chao1,observed_species,PD_whole_tree,shannon,simpson,goods_coverage
+alphas=${alpha_metrics//,/ }
+
 pick_otu_dir=$work_dir/01_pick_otu
 pick_otu_summary=$pick_otu_dir/sumOTUPerSample.txt
 
 if [ -f $pick_otu_summary ];then
 	minimum=$( (awk '{print $7}' $pick_otu_dir/sumOTUPerSample.txt) | (sort -n) | (head -n 2) | (tail -n 1) )
 else
-	echo 'please set \$pick_otu_dir and \$pick_otu_summary!'
+	echo 'please set $pick_otu_summary and $minimum!'
 fi
 
 otu_table_dir=$work_dir/03_otu_table

@@ -83,19 +83,19 @@ sh5=\$work_dir/05_diff_taxa_analysis/work  " >$subwork_dir/05_diff_taxa_analysis
 echo "\
 source $subwork_dir/00_all_config.sh
 [ -f $subwork_dir/filt.o ] && rm $subwork_dir/filt.o $subwork_dir/filt.e
-qsub0=\`qsub -cwd -l vf=1G -q all.q -N $job_name\_00 -e $subwork_dir/filt.e -o $subwork_dir/filt.o -terse $subwork_dir/filt.sh\`
+qsub0=\`qsub -cwd -l vf=1G -q all.q -N \$job_name\_00 -e $subwork_dir/filt.e -o $subwork_dir/filt.o -terse $subwork_dir/filt.sh\`
 while [ ! -f $subwork_dir/sumOTUPerSample.txt ];
 do
 	sleep 1m;
 done
 source $subwork_dir/03_otu_table_config.sh
-qsub3=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_03 -e \$sh3.e -o \$sh3.o -terse -hold_jid \$qsub0 \$sh3.sh\`
+qsub3=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_03 -e \$sh3.e -o \$sh3.o -terse -hold_jid \$qsub0 \$sh3.sh\`
 source $subwork_dir/04_diversity_analysis_config.sh
-qsub4_1=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e \$sh4_1.e -o \$sh4_1.o -terse -hold_jid \$qsub3 \$sh4_1.sh\`
-qsub4_2=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e \$sh4_2.e -o \$sh4_2.o -terse -hold_jid \$qsub4_1 \$sh4_2.sh\`
-qsub4_3=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e \$sh4_3.e -o \$sh4_3.o -terse -hold_jid \$qsub4_1 \$sh4_3.sh\`
+qsub4_1=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_04 -e \$sh4_1.e -o \$sh4_1.o -terse -hold_jid \$qsub3 \$sh4_1.sh\`
+qsub4_2=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_04 -e \$sh4_2.e -o \$sh4_2.o -terse -hold_jid \$qsub4_1 \$sh4_2.sh\`
+qsub4_3=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_04 -e \$sh4_3.e -o \$sh4_3.o -terse -hold_jid \$qsub4_1 \$sh4_3.sh\`
 source $subwork_dir/05_diff_taxa_analysis_config.sh
-qsub5=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_05 -e \$sh5.e -o \$sh5.o -terse -hold_jid \$qsub3 \$sh5.sh\`
+qsub5=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_05 -e \$sh5.e -o \$sh5.o -terse -hold_jid \$qsub3 \$sh5.sh\`
 log='there still have some jobs to do'
 while [ -n \"\$log\" ];
 do
@@ -104,6 +104,11 @@ do
     log=\$(qstat -j \$qsub2,\$qsub3,\$qsub4_1,\$qsub4_2,\$qsub4_3,\$qsub5);
 done
 ">$subwork_dir/pipeline.qsub
+
+[ -f nohup.out ] && rm nohup.out
+cd $subwork_dir
+nohup sh $subwork_dir/pipeline.qsub &
+cd $work_dir
 
 done
 

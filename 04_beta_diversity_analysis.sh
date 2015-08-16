@@ -16,7 +16,7 @@ $script_04_beta_boxplot $wf_bdiv_outdir/weighted_unifrac_otu_table.txt $group_fi
 $script_04_beta_boxplot $wf_bdiv_outdir/unweighted_unifrac_otu_table.txt $group_file
 $script_04_beta_pcoa $wf_bdiv_outdir/weighted_unifrac_otu_table.txt $group_file
 $script_04_beta_pcoa $wf_bdiv_outdir/unweighted_unifrac_otu_table.txt $group_file
-mkdir $cluster_tree_out_dir
+mkdir -p $cluster_tree_out_dir
 jackknifed_beta_diversity.py -i $otu_biom -m $map_file -e $minimum -t $beta_sub_dir/rep_phylo.tre -o $cluster_tree_out_dir -f
 make_bootstrapped_tree.py -m $cluster_tree_out_dir/unweighted_unifrac/upgma_cmp/master_tree.tre -s $cluster_tree_out_dir/unweighted_unifrac/upgma_cmp/jackknife_support.txt -o $cluster_tree_out_dir/unweighted_unifrac_cluster.pdf
 make_bootstrapped_tree.py -m $cluster_tree_out_dir/weighted_unifrac/upgma_cmp/master_tree.tre -s $cluster_tree_out_dir/weighted_unifrac/upgma_cmp/jackknife_support.txt -o $cluster_tree_out_dir/weighted_unifrac_cluster.pdf

@@ -1,24 +1,6 @@
 #!/usr/bin/env perl
 die "perl $0 <otu_all.txt><group><out>" unless(@ARGV==3); 
 my ($otu0,$group,$out)=@ARGV;
-my @otu=split/\./,$otu0;
-my $otuname=shift @otu;
-
-open IN,$otu0 or die $!;
-open OUT,">$otuname\_filt.txt";
-while(<IN>){
-    chomp;
-    s/\s+$//;
-    my @tabs = split /\t/;
-    next if @tabs==1;
-    print OUT "$_\n";
-}
-close IN;
-close OUT;
-
-system("sort $otuname\_filt.txt|uniq -u  >$otuname\_su.txt");
-system("sort $otuname\_filt.txt|uniq -d  >$otuname\_head.txt");
-system("cat $otuname\_head.txt $otuname\_su.txt>$otuname.trans.txt");
 
 open IN,$group or die $!;
 my %group;
@@ -29,14 +11,28 @@ while(<IN>){
 
 }
 close IN;
-open IN,"$otuname.trans.txt" || die "can not open $otuname.trans.txt\n";
-open OUT,">$out" || die "can not open $out\n";
+
+$otu0 =~ /(\S+)\./;
+my $base = $1;
+chomp(my $head=`sort $otu0 | uniq -d `);
+chomp(my $content = `sort $otu0 | uniq -u`);
+open OUT,">$base.trans.txt" or die $!;
+print OUT "$head\n";
+print OUT "$content\n";
+close OUT;
+
+open IN,"$base.trans.txt" or die $!;
+open OUT,">$out" or die $!;
 my $header=<IN>;
 my @headers=split/\t/,$header;
 shift @headers;
 chomp @headers;
-my $otu;my $samples;
-foreach my $sample(@headers){$otu.="$group{$sample}\t";$samples.="$sample\t";}
+my $otu;
+my $samples;
+foreach my $sample(@headers){
+    $otu.="$group{$sample}\t";
+    $samples.="$sample\t";
+}
 chop $otu;chop $samples;
 print OUT "class\t$otu\n";
 print OUT "Taxon\t$samples\n";

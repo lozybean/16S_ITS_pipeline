@@ -29,19 +29,23 @@ exit 1;
 my @profile=split/\./,$profile;
 my $otuname=shift @profile;
 open IN,$profile || die $!;
-<IN>;
 open OUT,">$otuname.t.txt"|| die $!;
 my $header=<IN>;
+if($header=~ /# Constructed from biom file/){
+    $header=<IN>;
+}
+$header=~s/^#//;
 print OUT $header;
 while(<IN>){
-        chomp;
-        my @tabs=split/\t/,$_;
-        next if($tabs[0]=~/Other/ or $tabs[0]=~/__$/ or $tabs[0]=~/Unclassified/);
-        my @names=split/;/,$tabs[0];
-        my $name=pop @names;
+    chomp;
+    s/\s+$//;
+    my @tabs=split/\t/,$_;
+    next if($tabs[0]=~/Other/ or $tabs[0]=~/__$/ or $tabs[0]=~/Unclassified/);
+    my @names=split/;/,$tabs[0];
+    my $name=pop @names;
 	shift @tabs;
-	my $tab=join("\t",@tabs);
-	print OUT "$name\t$tab\n";
+    $"="\t";
+	print OUT "$name\t@tabs\n";
         
 }
 close IN;
@@ -74,8 +78,8 @@ for(i in 1:length(g_order)){
 	glist=c(glist,g1)
 }
 kruskal=function(X,group,g){
-p=c()
-for(i in 1:nrow(X)){
+    p=c()
+    for(i in 1:nrow(X)){
         xlist=c()
         for(j in 1:length(g_order)){
                 rname=which(group[,1]==g_order[j])
@@ -86,13 +90,15 @@ for(i in 1:nrow(X)){
         }
         p0=kruskal.test(xlist)["p.value"][[1]][1]
         p=c(p,p0)
-}
-p
+    }
+    p
 }
 
 if($group_number==2){
 	p <- apply(X, 1, function(row) unlist(wilcox.test(row[glist[[1]]],row[glist[[2]]])["p.value"]))
-}else{p<-kruskal(X,group,g_order)}
+}else{
+    p<-kruskal(X,group,g_order)
+}
 p
 fdr <- p.adjust(p, method = "fdr", n = length(p))
 statsKWs<-cbind(rownames(X),means,p)
@@ -101,6 +107,6 @@ colnames(statsKWs)<- c("taxonname",meanname,"pvalue")
 statsKWs0<-statsKWs[statsKWs[,ploc]<$qcutoff,]
 statsKWs1=matrix(statsKWs0,ncol=ploc)
 colnames(statsKWs1)=colnames(statsKWs)
-write.table(statsKWs1,"$otuname.diff.marker.txt",row.names=F,quote=F,sep="\t")
+write.table(statsKWs1,"$otuname.diff.marker.txt",row.names=F,quote=F,sep="\\t")
 RTXT
 system("R CMD BATCH $otuname.wilcox.diff.R $otuname.wilcox.diff.Rout");
