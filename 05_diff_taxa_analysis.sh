@@ -13,7 +13,7 @@ all_level_outdir=$subdir/tax_all_level
 mkdir -p $all_level_outdir
 echo "\
 cp $subdir/otu_table_all.trans.txt $all_level_outdir
-$script_05_tax_diff -profile $all_level_outdir/otu_table_all.trans.txt -group $group_file -gnum $group_num -qcutoff 0.05
+$script_05_tax_diff -profile $all_level_outdir/otu_table_all.trans.txt -group $group_file -gnum $group_num -qcutoff $p_cutoff
 $script_05_tax_marker_boxplot -input $all_level_outdir/otu_table_all.trans.txt -group $group_file -marker $all_level_outdir/otu_table_all.diff.marker.txt -prefix $all_level_outdir/otu_table_all.diff
 $script_05_marker_tax $all_level_outdir/otu_table_all.diff.marker.for_draw.xls $all_level_outdir/otu_table_all.diff.marker.xls
 $script_05_pca_diff -profile $all_level_outdir/otu_table_all.diff.marker.xls -group $group_file
@@ -23,7 +23,7 @@ genus_level_outdir=$subdir/tax_genus_level
 mkdir -p $genus_level_outdir
 echo "\
 cp $subdir/otu_table_L6.txt $genus_level_outdir
-$script_05_tax_diff -profile $genus_level_outdir/otu_table_L6.txt -group $group_file -gnum $group_num -qcutoff 0.05
+$script_05_tax_diff -profile $genus_level_outdir/otu_table_L6.txt -group $group_file -gnum $group_num -qcutoff $p_cutoff
 $script_05_tax_marker_boxplot -input $genus_level_outdir/otu_table_L6.txt -group $group_file -marker $genus_level_outdir/otu_table_L6.diff.marker.txt -prefix $genus_level_outdir/otu_table_L6.diff
 $script_05_marker_tax $genus_level_outdir/otu_table_L6.diff.marker.for_draw.xls $genus_level_outdir/otu_table_L6.diff.marker.xls
 $script_05_pca_diff -profile $genus_level_outdir/otu_table_L6.diff.marker.xls -group $group_file
@@ -33,7 +33,7 @@ otu_diff_outdir=$subdir/otu_diff
 mkdir -p $otu_diff_outdir
 echo "\
 cp $subdir/otu_table_otu.txt $otu_diff_outdir/otu_table_otu.txt
-$script_05_tax_diff -profile $otu_diff_outdir/otu_table_otu.txt -group $group_file -gnum $group_num -qcutoff 0.05
+$script_05_tax_diff -profile $otu_diff_outdir/otu_table_otu.txt -group $group_file -gnum $group_num -qcutoff $p_cutoff
 $script_05_otu_diff_statistics $otu_diff_outdir/otu_table_otu.diff.marker.txt $rep_set_tax_assignments 
 $script_05_tax_marker_boxplot -input $otu_diff_outdir/otu_table_otu.txt -group $group_file -marker $otu_diff_outdir/otu_table_otu.diff.marker.txt -prefix $otu_diff_outdir/otu_table_otu.diff
 $script_05_marker_tax $otu_diff_outdir/otu_table_otu.diff.marker.for_draw.xls $otu_diff_outdir/otu_table_otu.diff.marker.xls

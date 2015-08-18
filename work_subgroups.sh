@@ -44,6 +44,8 @@ ITS_or_16S=$ITS_or_16S
 fna_file=$fna_file
 group_file=$group_file
 if_remain_small_size=$if_remain_small_size
+super_work_dir=$work_dir
+subgroup_name=$subgroup_name
 
 # importing pipeline default settings ...
 pipeline_path=/data_center_01/home/NEOLINE/liangzebin/pipeline/16S/pipeline_ver_1.0
@@ -52,7 +54,6 @@ source \$pipeline_path/all_config.sh
 	
 echo "\
 source \$config_path/03_otu_table_config.sh
-super_work_dir=$work_dir
 pick_otu_dir=\$super_work_dir/01_pick_otu
 otu_all=\$pick_otu_dir/otus_all.txt
 seqs_all=\$pick_otu_dir/seqs_all.fa
@@ -103,7 +104,7 @@ do
     echo 'waiting for all jobs done ...'
     log=\$(qstat -j \$qsub2,\$qsub3,\$qsub4_1,\$qsub4_2,\$qsub4_3,\$qsub5);
 done
-">$subwork_dir/pipeline.qsub
+source  \$pipeline_path/subgroup_upload.sh	">$subwork_dir/pipeline.qsub
 
 [ -f nohup.out ] && rm nohup.out
 cd $subwork_dir

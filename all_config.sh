@@ -20,13 +20,18 @@ gg_lanemask=/data_center_01/soft/greengenes/lanemask_in_1s_and_0s
 #set python environment
 PYTHONPATH=''
 PATH=/data_center_01/home/liangzb/.pyenv/versions/2.7.10/bin:$PATH
+R_HOME=/data_center_01/home/NEOLINE/liangzebin/soft/R/R-3.1.3
+PATH=$R_HOME/bin:$PATH
+LD_LIBRARY_PATH=$R_HOME/lib:$LD_LIBRARY_PATH
+R_LIBS=$R_HOME/lib64/R/library
+RDP_JAR_PATH=/home/snowflake/softwares/qiime/rdp_classifier_2.2/rdp_classifier-2.2.jar
+LEfSe_PATH=/data_center_01/home/NEOLINE/liangzebin/soft/LEfSe/nsegata-lefse-094f447691f0
+PATH=$LEfSe_PATH:$PATH
 
 usearch=/home/snowflake/local/bin/usearch7.0.1090_i86linux32
 java=/home/snowflake/softwares/jdk1.8.0_25/bin/java
 RDPtools=/home/snowflake/softwares/RDP-classifier/RDPTools/classifier/dist/classifier.jar
 transform_rdp_result2qiimeform_script=$script_path/transform_rdp_result2qiimeform.pl
-## LEfSe config
-PATH=/data_center_01/home/NEOLINE/liangzebin/soft/LEfSe/nsegata-lefse-094f447691f0:$PATH
 
 #script
 alpha_rare_curve_script=$script_path/alpha_rare_curve.pl
@@ -39,6 +44,8 @@ sample_downsize_script=$script_path/sample_downsize.pl
 filt_rep_set_tax_ass_script=$script_path/filt_rep_set_tax_ass.pl
 filter_by_group_script=$script_path/filter_by_group.pl
 filter_sum_txt_by_group_script=$script_path/filter_sum_txt_by_group.pl
+length_sum_script=$script_path/length_sum.pl
+sumOTUTotal_script=$script_path/sumOTUTotal.py
 
 # otu table script
 script_03_core_otu=$script_path/03_core_otu.pl

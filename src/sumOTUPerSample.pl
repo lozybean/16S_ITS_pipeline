@@ -21,7 +21,8 @@ $/ = '>';
 <IN>;
 while(<IN>){
 	chomp;
-	my @tab = split /;/;
+    my @lines = split /\n/;
+	my @tab = split /;/,$lines[0];
 	next unless ($tab[1] eq "size=1");
 	$tab[0]=~/(\S+)\_\w+$/;
 	my $sample = $1;

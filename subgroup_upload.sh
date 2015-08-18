@@ -1,17 +1,10 @@
-upload_dir=$work_dir/Upload
-mkdir -p $upload_dir
-
-## ++++++++++++++++++++++++++++++++++++++++++++++++++  01_reads ++++++++++++++++++++++++++++++++++++++++++++++++ ##
-dir_01=$upload_dir/01_Reads
-mkdir -p $dir_01
-cp $work_dir/01_pick_otu/seqs_all.fa $dir_01/seqs_all.fna
-cp $work_dir/01_pick_otu/sumOTUPerSample.txt $dir_01/sumOTUPerSample.xls
-cp $work_dir/03_otu_table/seqs_downsize_$minimum.fa $dir_01/seqs_downsize_$minimum.fa
-cp $work_dir/01_pick_otu/length_sum.p* $dir_01/
-cp $work_dir/01_pick_otu/sum.txt $dir_01/
+super_work_dir=$super_work_dir
+work_dir=$work_dir
+upload_dir=$super_work_dir/Upload
+subgroup_name=$subgroup_name
 
 ## ++++++++++++++++++++++++++++++++++++++++++++++++++  02_OTU ++++++++++++++++++++++++++++++++++++++++++++++++++ ##
-dir_02=$upload_dir/02_OTU
+dir_02=$upload_dir/02_OTU/$subgroup_name
 otu_table_dir=$work_dir/03_otu_table
 mkdir -p $dir_02
 cp $otu_table_dir/$ass_tax_method\_assigned_taxonomy/sample_otu_statatistics.txt $dir_02/sample_otu_statatistics.xls
@@ -51,17 +44,11 @@ do
     cp $wf_indir/bar_plot_group/otu_table_group_L$i.pdf $wf_outdir/
 done
 
-summary_file=$work_dir/01_pick_otu/sumOTUPerSample.txt
+summary_file=$work_dir/sumOTUPerSample.txt
 minimum=$( (awk '{print $7}' $summary_file) | (sort -n) | (head -n 2) | (tail -n 1) )
 
-alpha_rare_indir=$work_dir/02_alpha_rare_curve/multiple_rarefactions/alpha_div_collated
-alpha_rare_outdir=$upload_dir/03_Alpha_diversity/alpha_rare
-mkdir -p $alpha_rare_outdir
-cp $alpha_rare_indir/*.pdf $alpha_rare_outdir/
-cp $alpha_rare_indir/*.png $alpha_rare_outdir/
-
 ## +++++++++++++++++++++++++++++++++++++++++++++++++  03_alpha_diff ++++++++++++++++++++++++++++++++++++++++++++ ##
-dir_03=$upload_dir/03_Alpha_diversity/alpha_diff
+dir_03=$upload_dir/03_Alpha_diversity/alpha_diff/$subgroup_name
 mkdir -p $dir_03
 alpha_dir=$work_dir/04_diversity_analysis/alpha_diff/wf_arare_$minimum/alpha_div_collated
 cp $alpha_dir/*.pdf $dir_03/
@@ -69,8 +56,9 @@ cp $alpha_dir/*.png $dir_03/
 cp $alpha_dir/alpha_statistics.txt $dir_03/alpha_statistics.xls
 cp $alpha_dir/alpha.markers.txt $dir_03/alpha.markers.xls
 
+
 ## +++++++++++++++++++++++++++++++++++++++++++++++++  04_beta_diff +++++++++++++++++++++++++++++++++++++++++++++ ##
-dir_04=$upload_dir/04_Beta_diversity/
+dir_04=$upload_dir/04_Beta_diversity/$subgroup_name
 mkdir -p $dir_04
 beta_dir=$work_dir/04_diversity_analysis/beta_diff/wf_bdiv_even_$minimum
 cp $beta_dir/unweighted_unifrac_otu_table.boxplot.pdf   $dir_04/unweighted_unifrac.boxplot.pdf
@@ -90,11 +78,11 @@ cp $beta_dir\_heatmap/Beta_weighted_diversity_heatmap.png   $dir_04/weighted_uni
 
 beta_cluster_indir=$work_dir/04_diversity_analysis/beta_diff/cluster_tree
 beta_cluster_outdir=$dir_04/cluster_tree
-mkdir $beta_cluster_outdir
-cp $beta_cluster_outdir/*weighted_unifrac_cluster.p* $beta_cluster_outdir
+mkdir -p  $beta_cluster_outdir
+cp $beta_cluster_indir/*weighted_unifrac_cluster.p* $beta_cluster_outdir
 
 ## +++++++++++++++++++++++++++++++++++++++++++++++++  05_tax_diff ++++++++++++++++++++++++++++++++++++++++++++++ ##
-dir_05=$upload_dir/05_Diff_marker/
+dir_05=$upload_dir/05_Diff_marker/$subgroup_name
 mkdir -p $dir_05
 diff_dir=$work_dir/05_diff_taxa_analysis
 

@@ -34,11 +34,14 @@ open(SIN, ">$out/single.fa") or die $!;
 open(MUL, ">$out/mul.fa") or die $!;
 open(DER, ">$out/derep.fa") or die $!;
 open(REM, ">$out/remove_single.fa") or die $!;
-while(my $line = <IN>){
-	chomp($line);
-	$title = $line;
-	$seq = <IN>;
-	chomp($seq);
+$/ = '>';
+<IN>;
+while(<IN>){
+    chomp;
+    my @lines = split /\n/;
+    $title = shift @lines;
+    $title = ">$title";
+    $seq = join('',@lines);
 	$all=$all+1;
 	if(exists $read{$seq}){
 		$rm_single=$rm_single+1;
@@ -51,6 +54,7 @@ while(my $line = <IN>){
 	}
 }
 close IN;
+$/ = "\n";
 foreach my $key(keys %read_size){
 	print DER "$read{$key};size=$read_size{$key};\n";
 	print DER "$key\n";
