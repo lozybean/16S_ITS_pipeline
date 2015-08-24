@@ -1,9 +1,15 @@
 #!/usr/bin/env perl
 use strict;
 use File::Basename;
-die "perl $0 <alpha_all.txt><group.txt>< if col by group>" unless(@ARGV==3);
+die "perl $0 <alpha_all.txt><group.txt>< if col by group><km>" unless(@ARGV>=3);
 
-my ($alpha,$group,$choice)=@ARGV if @ARGV==3;
+my ($alpha,$group,$choice,$km);
+if (@ARGV==3){
+    ($alpha,$group,$choice) = @ARGV;
+    $km = 10;
+}elsif(@ARGV==4){
+    ($alpha,$group,$choice,$km) = @ARGV;
+}
 my @alpha=split/\./,$alpha;
 my $alphaname=shift @alpha;
 my $alphabase=basename($alphaname);
@@ -37,7 +43,7 @@ if("$choice" == "N"){
     legend("topright",legend=g_order,col=gcols_order,seg.len=1.5,lwd=1.6,cex=0.8)
 }
 otu <- function(reads, vmax, km){
-  vmax * reads / (km + reads)
+    vmax * reads / (km + reads)
 }
 #colors = rainbow(9)
 for(i in 1:ncol(table))
@@ -46,7 +52,7 @@ for(i in 1:ncol(table))
         col = as.numeric(as.character(col[col != "n/a"]))
         readnum = readnumber[1:length(col)]
         color=colors[i]
-	estimation = nls(col~otu(readnum, vmax, km), start=list( vmax = max(col), km = 100),lower=c(0,0.2),algorithm = "port")
+	estimation = nls(col~otu(readnum, vmax, km), start=list( vmax = max(col), km = $km),lower=c(0,0.2),algorithm = "port")
 	estimation
         x = seq(0,max(readnum), 1)
         y = otu(x, coef(estimation)[1], coef(estimation)[2])

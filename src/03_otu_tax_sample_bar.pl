@@ -112,7 +112,7 @@ library(RColorBrewer)
 group=read.table("$sample",header=F,row.names=1)
 #rownames(X)=sub("X","",rownames(X))
 library(WGCNA)
-cols=labels2colors(group,colorSeq=2:8)
+cols=labels2colors(group,colorSeq=2:18)
 
 #col=colorRampPalette(brewer.pal(8, "Dark2"))(8)
 #cols=c(rep(3,21),rep(4,13),rep(2,10))

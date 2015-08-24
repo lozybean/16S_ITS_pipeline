@@ -86,7 +86,7 @@ sub means{
         my $sd=0;
         map{$aver += $_} @_;
         $aver /=scalar@_;
-	map{$sd=($_-$aver)**2} @_;
+	map{$sd+=($_-$aver)**2} @_;
         $sd=($sd/scalar@_)**0.5;
 	my @mean;
 	$mean[0]=$aver;$mean[1]=$sd;

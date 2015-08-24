@@ -12,13 +12,9 @@ ITS_or_16S=
 [ -z $fna_file ] && fna_file=$work_dir/$ITS_or_16S\_together.fna
 [ -z $group_file ] && group_file=$work_dir/group.txt
 [ -z $group_num ] && group_num=$((sort -u -k2 $group_file) | (wc -l))
-if_remain_small_size=Y
-
-# if you have some subgroup, set $if_have_subgroup=Y  and  list the subgroup_files and subgroup_names as arrays,  
 if_have_subgroup=N
-subgroup_files=($work_dir/A-B.txt $work_dir/A-C.txt $work_dir/A-D.txt $work_dir/B-C.txt $work_dir/B-D.txt $work_dir/C-D.txt)
-subgroup_names=( A-B A-C A-D B-C B-D C-D )
-subgroup_num=${#subgroup_names[@]}
+
+if_remain_small_size=Y
 
 if [ -z $ITS_or_16S ] && [ $ITS_or_16S != '16S' ] && [ $ITS_or_16S != 'ITS' ]  ;then
     echo 'you have to confirm the data type [ 16S or ITS ]'
@@ -34,12 +30,6 @@ ITS_or_16S=$ITS_or_16S
 fna_file=$fna_file
 group_file=$group_file
 if_remain_small_size=$if_remain_small_size
-
-# if you have some subgroup, set $if_have_subgroup=Y  and  list the subgroup_files and subgroup_names as arrays,
-if_have_subgroup=$if_have_subgroup
-subgroup_files=$subgroup_files
-subgroup_names=$subgroup_names
-subgroup_num=$subgroup_num
 
 # importing pipeline default settings ... 
 pipeline_path=/data_center_01/home/NEOLINE/liangzebin/pipeline/16S/pipeline_ver_1.0
@@ -95,7 +85,7 @@ do
         sleep 1m
         echo 'waiting for picking otu  ...'
 done
-[ "$if_have_subgroup" = 'Y' ]  && sh $pipeline_path/work_subgroups.sh 
+[ "$if_have_subgroup" = 'Y' ]  && sh $work_dir/work_subgroups.sh 
 source $work_dir/02_alpha_rare_curve_config.sh
 qsub2=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_02 -e \$sh2.e -o \$sh2.o -terse \$sh2.sh\`
 source $work_dir/03_otu_table_config.sh

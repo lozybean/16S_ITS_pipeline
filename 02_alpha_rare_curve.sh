@@ -37,7 +37,8 @@ pick_rep_set.py -i $otu_all -f $seqs_all -o $rep_set -l $pick_rep_log -m $pick_r
 assign_taxonomy.py -i $rep_set -m $ass_tax_method -r $gg_ref -t $gg_tax -o $ass_tax_outdir  
 make_otu_table.py -i $otu_all -t $ass_tax_outdir/rep_set_tax_assignments.txt -o $otu_biom
 align_seqs.py -i $rep_set -m $align_seq_method -t $gg_imputed -o $align_seq_outdir
-filter_alignment.py -i $align_seq_outdir/rep_set_aligned.fasta -m $gg_lanemask -o $filter_alignment_outdir  ">$sub_dir/work.sh
+filter_alignment.py -i $align_seq_outdir/rep_set_aligned.fasta -m $gg_lanemask -o $filter_alignment_outdir  
+make_phylogeny.py -i $filter_alignment_outdir/rep_set_aligned_pfiltered.fasta -o $phylogeny ">$sub_dir/work.sh
 elif [ $ITS_or_16S = 'ITS' ]; then
     echo "\
 pick_rep_set.py -i $otu_all -f $seqs_all -o $rep_set -l $pick_rep_log -m $pick_rep_method
@@ -45,15 +46,15 @@ mkdir -p $ass_tax_outdir
 $java -Xmx1g -jar $RDPtools -g fungalits_unite -c 0.8 -o $ass_tax_outdir/rep_set_tax_assignments_classifier.txt $rep_set
 $transform_rdp_result2qiimeform_script $ass_tax_outdir/rep_set_tax_assignments_classifier.txt 0.8 $ass_tax_outdir/rep_set_tax_assignments.txt ITS
 make_otu_table.py -i $otu_all -t $ass_tax_outdir/rep_set_tax_assignments.txt -o $otu_biom
-align_seqs.py -i $rep_set -m $align_seq_method -o $align_seq_outdir     " >$sub_dir/work.sh
+align_seqs.py -i $rep_set -m $align_seq_method -o $align_seq_outdir     
+make_phylogeny.py -i $align_seq_outdir/rep_set_aligned.fasta -o $phylogeny" >$sub_dir/work.sh
 else
     echo "the data type must be 16S or ITS ! "
     exit
 fi
 
 echo \
-"make_phylogeny.py -i $filter_alignment_outdir/rep_set_aligned_pfiltered.fasta -o $phylogeny
-mkdir -p $multiple_rarefactions_dir
+"mkdir -p $multiple_rarefactions_dir
 multiple_rarefactions.py -i $otu_biom $multiple_rarefactions_argv -x $maximum -o $multiple_rarefactions_dir/rarefaction
 alpha_diversity.py -i $multiple_rarefactions_dir/rarefaction -o $multiple_rarefactions_dir/alpha_div --metrics $alpha_metrics -t $phylogeny
 collate_alpha.py -i $multiple_rarefactions_dir/alpha_div -o $alpha_collated_dir

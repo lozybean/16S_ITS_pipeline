@@ -7,10 +7,11 @@
 # if you just want to run some steps, you have to confirm the settings
 
 #Dependency Config [must be setted!]
-work_dir=$(pwd)
-subgroup_files=($work_dir/A-B.txt $work_dir/A-C.txt $work_dir/A-D.txt $work_dir/B-C.txt $work_dir/B-D.txt $work_dir/C-D.txt)
-subgroup_names=( A-B A-C A-D B-C B-D C-D )
-subgroup_num=${#subgroup_names[@]}
+work_dir=$PWD
+source $work_dir/00_all_config.sh
+[ -z $subgroup_files ] && subgroup_files=
+[ -z $subgroup_names ] && subgroup_names=
+[ -z $subgroup_num ] && subgroup_num=${#subgroup_names[@]}
 
 if [ ! -f $work_dir/01_pick_otu/sumOTUPerSample.txt ];then
 	echo 'you must run work.sh and finish the first step first!'
@@ -20,8 +21,6 @@ fi
 for i in $(seq $subgroup_num)
 do
 
-source $work_dir/00_all_config.sh
-
 subgroup_file=${subgroup_files[$i-1]}
 subgroup_name=${subgroup_names[$i-1]}
 subwork_dir=$work_dir/$subgroup_name
@@ -30,8 +29,11 @@ cd $subwork_dir
 cp $subgroup_file $subwork_dir/
 pick_otu_summary=$work_dir/01_pick_otu/sumOTUPerSample.txt
 
-echo "\
-$filter_sum_txt_by_group_script $subgroup_file $pick_otu_summary $subwork_dir/sumOTUPerSample.txt  ">$subwork_dir/filt.sh
+supersample_num=$( (wc -l $group_file)|awk '{print $1}' )
+subsample_num=$( (wc -l $subgroup_file)|awk '{print $1}' )
+
+echo "$filter_sum_txt_by_group_script $subgroup_file $pick_otu_summary $subwork_dir/sumOTUPerSample.txt  ">$subwork_dir/filt.sh
+
 
 group_file=$subgroup_file
 group_num=$((sort -u -k2 $group_file) | (wc -l))
@@ -81,13 +83,38 @@ source \$config_path/05_diff_taxa_analysis_config.sh
 source \$pipeline_path/05_diff_taxa_analysis.sh
 sh5=\$work_dir/05_diff_taxa_analysis/work  " >$subwork_dir/05_diff_taxa_analysis_config.sh
 
+if [ $supersample_num = $subsample_num ];then
+
+echo "\
+source $subwork_dir/00_all_config.sh
+[ -f $subwork_dir/filt.o ] && rm $subwork_dir/filt.o $subwork_dir/filt.e
+cp $pick_otu_summary $subwork_dir/sumOTUPerSample.txt
+source $subwork_dir/03_otu_table_config.sh
+ln -s $work_dir/03_otu_table $subwork_dir/03_otu_table
+source $subwork_dir/04_diversity_analysis_config.sh
+cp $work_dir/04_diversity_analysis_config/rep_phylo.tre $subwork_dir/
+qsub4_2=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_04 -e \$sh4_2.e -o \$sh4_2.o -terse \$sh4_2.sh\`
+qsub4_3=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_04 -e \$sh4_3.e -o \$sh4_3.o -terse \$sh4_3.sh\`
+source $subwork_dir/05_diff_taxa_analysis_config.sh
+qsub5=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_05 -e \$sh5.e -o \$sh5.o -terse \$sh5.sh\`
+log='there still have some jobs to do'
+while [ -n \"\$log\" ];
+do
+    sleep 1m
+    echo 'waiting for all jobs done ...'
+    log=\$(qstat -j \$qsub4_2,\$qsub4_3,\$qsub5);
+done
+source  \$pipeline_path/subgroup_upload.sh	">$subwork_dir/pipeline.qsub
+
+else
+
 echo "\
 source $subwork_dir/00_all_config.sh
 [ -f $subwork_dir/filt.o ] && rm $subwork_dir/filt.o $subwork_dir/filt.e
 qsub0=\`qsub -cwd -l vf=1G -q all.q -N \$job_name\_00 -e $subwork_dir/filt.e -o $subwork_dir/filt.o -terse $subwork_dir/filt.sh\`
 while [ ! -f $subwork_dir/sumOTUPerSample.txt ];
 do
-	sleep 1m;
+    sleep 1m;
 done
 source $subwork_dir/03_otu_table_config.sh
 qsub3=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_03 -e \$sh3.e -o \$sh3.o -terse -hold_jid \$qsub0 \$sh3.sh\`
@@ -104,7 +131,9 @@ do
     echo 'waiting for all jobs done ...'
     log=\$(qstat -j \$qsub2,\$qsub3,\$qsub4_1,\$qsub4_2,\$qsub4_3,\$qsub5);
 done
-source  \$pipeline_path/subgroup_upload.sh	">$subwork_dir/pipeline.qsub
+source  \$pipeline_path/subgroup_upload.sh  ">$subwork_dir/pipeline.qsub
+
+fi
 
 [ -f nohup.out ] && rm nohup.out
 cd $subwork_dir

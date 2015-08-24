@@ -40,7 +40,7 @@ barplot(t(X),col='blue',xlab='Sequence length',ylab='Sequence number')
 dev.off()
 RTXT
 close R;
-`Rscript length_sum.R`;
-`convert length_sum.pdf length_sum.png`;
+`Rscript $path/length_sum.R`;
+`convert $path/length_sum.pdf $path/length_sum.png`;
 #`rm length_sum.R*`;
 
