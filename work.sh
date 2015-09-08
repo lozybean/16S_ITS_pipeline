@@ -7,7 +7,7 @@
 
 #Dependency Config [must be setted!]
 job_name=
-ITS_or_16S=
+ITS_or_16S=16S
 [ -z $work_dir ] && work_dir=$PWD
 [ -z $fna_file ] && fna_file=$work_dir/$ITS_or_16S\_together.fna
 [ -z $group_file ] && group_file=$work_dir/group.txt
@@ -15,9 +15,9 @@ ITS_or_16S=
 if_remain_small_size=Y
 
 # if you have some subgroup, set $if_have_subgroup=Y  and  list the subgroup_files and subgroup_names as arrays,  
-if_have_subgroup=N
-subgroup_files=($work_dir/A-B.txt $work_dir/A-C.txt $work_dir/A-D.txt $work_dir/B-C.txt $work_dir/B-D.txt $work_dir/C-D.txt)
-subgroup_names=( A-B A-C A-D B-C B-D C-D )
+if_have_subgroup=Y
+subgroup_files=( $work_dir/prop1.txt $work_dir/prop2.txt $work_dir/prop3.txt $work_dir/prop4.txt $work_dir/prop5.txt $work_dir/prop6.txt $work_dir/prop7.txt )
+subgroup_names=( prop1 prop2 prop3 prop4 prop5 prop6 prop7 )
 subgroup_num=${#subgroup_names[@]}
 
 if [ -z $ITS_or_16S ] && [ $ITS_or_16S != '16S' ] && [ $ITS_or_16S != 'ITS' ]  ;then
@@ -37,8 +37,8 @@ if_remain_small_size=$if_remain_small_size
 
 # if you have some subgroup, set $if_have_subgroup=Y  and  list the subgroup_files and subgroup_names as arrays,
 if_have_subgroup=$if_have_subgroup
-subgroup_files=$subgroup_files
-subgroup_names=$subgroup_names
+subgroup_files=(${subgroup_files[@]})
+subgroup_names=(${subgroup_names[@]})
 subgroup_num=$subgroup_num
 
 # importing pipeline default settings ... 
@@ -95,7 +95,7 @@ do
         sleep 1m
         echo 'waiting for picking otu  ...'
 done
-[ "$if_have_subgroup" = 'Y' ]  && sh $pipeline_path/work_subgroups.sh 
+[ "$if_have_subgroup" = 'Y' ]  && sh \$pipeline_path/work_subgroups.sh 
 source $work_dir/02_alpha_rare_curve_config.sh
 qsub2=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_02 -e \$sh2.e -o \$sh2.o -terse \$sh2.sh\`
 source $work_dir/03_otu_table_config.sh

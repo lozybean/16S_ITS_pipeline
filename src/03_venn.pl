@@ -44,6 +44,9 @@ my @guniq = grep { ! $seen{$_} ++ } @g;
 #my @guniq=unique(@g);
 @guniq=sort{$a cmp $b}@guniq;
 #print @guniq;
+foreach(@guniq){
+    s/-/_/g;
+}
 close IN;
 
 open IN,$otu or die $!;

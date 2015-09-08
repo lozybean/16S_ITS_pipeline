@@ -8,9 +8,9 @@ created date: 20150213
 use Getopt::Long;
 use File::Basename qw(dirname basename);
 
-my ($profile, $group,$group_number,$qcutoff, $help,);
+my ($profile, $group,$group_number,$qcutoff, $help,$pair);
 
-GetOptions("profile:s" => \$profile, "group:s" => \$group,"gnum:s" => \$group_number, "qcutoff:s" => \$qcutoff,"help|?" => \$help);
+GetOptions("profile:s" => \$profile, "group:s" => \$group,"gnum:s" => \$group_number, "qcutoff:s" => \$qcutoff, "pair:s" => \$pair,"help|?" => \$help);
 
 if (!defined $profile || !defined $group || !defined $group_number ||!defined $qcutoff ||defined $help) {
 	print STDERR << "USAGE";
@@ -21,6 +21,7 @@ options:
 	-group *: group table,"sample\\tgroup"
 	-gnum *:num
 	-qcutoff *:qcutoff
+    -pair: TRUE or FALSE
 	-help|?: print help information
 USAGE
 exit 1;
@@ -95,7 +96,7 @@ kruskal=function(X,group,g){
 }
 
 if($group_number==2){
-	p <- apply(X, 1, function(row) unlist(wilcox.test(row[glist[[1]]],row[glist[[2]]])["p.value"]))
+	p <- apply(X, 1, function(row) unlist(wilcox.test(row[glist[[1]]],row[glist[[2]]],paired=$pair)["p.value"]))
 }else{
     p<-kruskal(X,group,g_order)
 }

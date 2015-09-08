@@ -3,13 +3,17 @@ work_dir=$work_dir
 upload_dir=$super_work_dir/Upload
 subgroup_name=$subgroup_name
 
+minimum=$( (awk '{print $7}' $summary_file) | (sort -n) | (head -n 2) | (tail -n 1) )
+
 ## ++++++++++++++++++++++++++++++++++++++++++++++++++  02_OTU ++++++++++++++++++++++++++++++++++++++++++++++++++ ##
 dir_02=$upload_dir/02_OTU/$subgroup_name
 otu_table_dir=$work_dir/03_otu_table
 mkdir -p $dir_02
 cp $otu_table_dir/$ass_tax_method\_assigned_taxonomy/sample_otu_statatistics.txt $dir_02/sample_otu_statatistics.xls
 cp $otu_table_dir/otu_table.txt $dir_02/otu_table.xls
-cp $otu_table_dir/$ass_tax_method\_assigned_taxonomy/rep_set_tax_assignments.txt $dir_02/rep_set_tax_assignments.xls
+cp $otu_table_dir/otu_table.biom $dir_02/
+cp $otu_table_dir/otus_downsize_$minimum.txt $dir_02/
+cp $otu_table_dir/$ass_tax_method\_assigned_taxonomy/rep_set_tax_assignments_filt.txt $dir_02/rep_set_tax_assignments.xls
 cp $otu_table_dir/$ass_tax_method\_assigned_taxonomy/otu_statistics.txt $dir_02/otu_statistics.xls
 cp $otu_table_dir/otu_table.venn.tiff $dir_02/
 cp $otu_table_dir/otu_table.core.p* $dir_02/
@@ -45,7 +49,6 @@ do
 done
 
 summary_file=$work_dir/sumOTUPerSample.txt
-minimum=$( (awk '{print $7}' $summary_file) | (sort -n) | (head -n 2) | (tail -n 1) )
 
 ## +++++++++++++++++++++++++++++++++++++++++++++++++  03_alpha_diff ++++++++++++++++++++++++++++++++++++++++++++ ##
 dir_03=$upload_dir/03_Alpha_diversity/alpha_diff/$subgroup_name

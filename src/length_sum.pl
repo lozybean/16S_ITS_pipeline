@@ -34,8 +34,8 @@ for my $key(sort keys %length){
 close OUT;
 open R,">$path/length_sum.R" or die $!;
 print R <<RTXT;
-X=read.table("length_sum.txt",row.names=1)
-pdf('length_sum.pdf')
+X=read.table("$path/length_sum.txt",row.names=1)
+pdf('$path/length_sum.pdf')
 barplot(t(X),col='blue',xlab='Sequence length',ylab='Sequence number')
 dev.off()
 RTXT

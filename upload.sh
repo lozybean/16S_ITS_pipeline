@@ -16,7 +16,9 @@ otu_table_dir=$work_dir/03_otu_table
 mkdir -p $dir_02
 cp $otu_table_dir/$ass_tax_method\_assigned_taxonomy/sample_otu_statatistics.txt $dir_02/sample_otu_statatistics.xls
 cp $otu_table_dir/otu_table.txt $dir_02/otu_table.xls
-cp $otu_table_dir/$ass_tax_method\_assigned_taxonomy/rep_set_tax_assignments.txt $dir_02/rep_set_tax_assignments.xls
+cp $otu_table_dir/otu_table.biom $dir_02/
+cp $otu_table_dir/otus_downsize_$minimum.txt $dir_02/
+cp $otu_table_dir/$ass_tax_method\_assigned_taxonomy/rep_set_tax_assignments_filt.txt $dir_02/rep_set_tax_assignments.xls
 cp $otu_table_dir/$ass_tax_method\_assigned_taxonomy/otu_statistics.txt $dir_02/otu_statistics.xls
 cp $otu_table_dir/otu_table.venn.tiff $dir_02/
 cp $otu_table_dir/otu_table.core.p* $dir_02/

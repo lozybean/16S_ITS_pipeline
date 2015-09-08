@@ -9,6 +9,7 @@
 #Dependency Config [must be setted!]
 work_dir=$PWD
 source $work_dir/00_all_config.sh
+supergroup_file=$group_file
 [ -z $subgroup_files ] && subgroup_files=
 [ -z $subgroup_names ] && subgroup_names=
 [ -z $subgroup_num ] && subgroup_num=${#subgroup_names[@]}
@@ -29,9 +30,8 @@ cd $subwork_dir
 cp $subgroup_file $subwork_dir/
 pick_otu_summary=$work_dir/01_pick_otu/sumOTUPerSample.txt
 
-supersample_num=$( (wc -l $group_file)|awk '{print $1}' )
+supersample_num=$( (wc -l $supergroup_file)|awk '{print $1}' )
 subsample_num=$( (wc -l $subgroup_file)|awk '{print $1}' )
-
 echo "$filter_sum_txt_by_group_script $subgroup_file $pick_otu_summary $subwork_dir/sumOTUPerSample.txt  ">$subwork_dir/filt.sh
 
 
@@ -62,9 +62,17 @@ seqs_all=\$pick_otu_dir/seqs_all.fa
 pick_otu_summary=\$work_dir/sumOTUPerSample.txt
 rep_set_tax_ass_file=\$work_dir/03_otu_table/\$ass_tax_method\_assigned_taxonomy/rep_set_tax_assignments_filt.txt
 minimum=\$( (awk '{print \$7}' \$pick_otu_summary) | (sort -n) | (head -n 2) | (tail -n 1) )
-# if you want to change something, copy the configurations you want to change and change it after this line
+super_work_dir=$work_dir
+# if you want to change something, copy the configurations you want to change and change it after this line ">$subwork_dir/03_otu_table_config.sh
+if [ $supersample_num = $subsample_num ];then
+echo "\
+source \$pipeline_path/03_otu_table_for_subgroup.sh
+sh3=\$work_dir/03_otu_table/work                            ">>$subwork_dir/03_otu_table_config.sh
+else
+echo "\
 source \$pipeline_path/03_otu_table.sh
-sh3=\$work_dir/03_otu_table/work                            ">$subwork_dir/03_otu_table_config.sh
+sh3=\$work_dir/03_otu_table/work				">>$subwork_dir/03_otu_table_config.sh
+fi
 
 echo "\
 source \$config_path/04_diversity_analysis_config.sh
@@ -90,7 +98,7 @@ source $subwork_dir/00_all_config.sh
 [ -f $subwork_dir/filt.o ] && rm $subwork_dir/filt.o $subwork_dir/filt.e
 cp $pick_otu_summary $subwork_dir/sumOTUPerSample.txt
 source $subwork_dir/03_otu_table_config.sh
-ln -s $work_dir/03_otu_table $subwork_dir/03_otu_table
+qsub3=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_03 -e \$sh3.e -o \$sh3.o -terse \$sh3.sh\`
 source $subwork_dir/04_diversity_analysis_config.sh
 cp $work_dir/04_diversity_analysis_config/rep_phylo.tre $subwork_dir/
 qsub4_2=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_04 -e \$sh4_2.e -o \$sh4_2.o -terse \$sh4_2.sh\`
