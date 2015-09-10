@@ -95,11 +95,11 @@ do
         sleep 1m
         echo 'waiting for picking otu  ...'
 done
-[ "$if_have_subgroup" = 'Y' ]  && sh \$pipeline_path/work_subgroups.sh 
 source $work_dir/02_alpha_rare_curve_config.sh
 qsub2=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_02 -e \$sh2.e -o \$sh2.o -terse \$sh2.sh\`
 source $work_dir/03_otu_table_config.sh
 qsub3=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_03 -e \$sh3.e -o \$sh3.o -terse \$sh3.sh\`
+[ "$if_have_subgroup" = 'Y' ]  && sh \$pipeline_path/work_subgroups.sh 
 source $work_dir/04_diversity_analysis_config.sh
 qsub4_1=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e \$sh4_1.e -o \$sh4_1.o -terse -hold_jid \$qsub3 \$sh4_1.sh\`
 qsub4_2=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_04 -e \$sh4_2.e -o \$sh4_2.o -terse -hold_jid \$qsub4_1 \$sh4_2.sh\`

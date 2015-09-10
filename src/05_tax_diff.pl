@@ -102,12 +102,12 @@ if($group_number==2){
 }
 p
 fdr <- p.adjust(p, method = "fdr", n = length(p))
-statsKWs<-cbind(rownames(X),means,p)
+statsKWs<-data.frame(rownames(X),means,p)
 ploc=ncol(statsKWs)
 colnames(statsKWs)<- c("taxonname",meanname,"pvalue")
-statsKWs0<-statsKWs[statsKWs[,ploc]<$qcutoff,]
-statsKWs1=matrix(statsKWs0,ncol=ploc)
-colnames(statsKWs1)=colnames(statsKWs)
-write.table(statsKWs1,"$otuname.diff.marker.txt",row.names=F,quote=F,sep="\\t")
+statsKWs[,ploc]
+statsKWs0<-as.data.frame(statsKWs[statsKWs[,ploc]<$qcutoff,])
+colnames(statsKWs0)=colnames(statsKWs)
+write.table(statsKWs0,"$otuname.diff.marker.txt",row.names=F,quote=F,sep="\\t")
 RTXT
 system("R CMD BATCH $otuname.wilcox.diff.R $otuname.wilcox.diff.Rout");

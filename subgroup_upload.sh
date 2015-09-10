@@ -3,8 +3,6 @@ work_dir=$work_dir
 upload_dir=$super_work_dir/Upload
 subgroup_name=$subgroup_name
 
-minimum=$( (awk '{print $7}' $summary_file) | (sort -n) | (head -n 2) | (tail -n 1) )
-
 ## ++++++++++++++++++++++++++++++++++++++++++++++++++  02_OTU ++++++++++++++++++++++++++++++++++++++++++++++++++ ##
 dir_02=$upload_dir/02_OTU/$subgroup_name
 otu_table_dir=$work_dir/03_otu_table

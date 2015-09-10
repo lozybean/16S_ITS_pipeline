@@ -63,9 +63,16 @@ pick_otu_summary=\$work_dir/sumOTUPerSample.txt
 rep_set_tax_ass_file=\$work_dir/03_otu_table/\$ass_tax_method\_assigned_taxonomy/rep_set_tax_assignments_filt.txt
 minimum=\$( (awk '{print \$7}' \$pick_otu_summary) | (sort -n) | (head -n 2) | (tail -n 1) )
 super_work_dir=$work_dir
-# if you want to change something, copy the configurations you want to change and change it after this line 
+# if you want to change something, copy the configurations you want to change and change it after this line ">$subwork_dir/03_otu_table_config.sh
+if [ $supersample_num = $subsample_num ];then
+echo "\
+source \$pipeline_path/03_otu_table_for_subgroup.sh
+sh3=\$work_dir/03_otu_table/work                            ">>$subwork_dir/03_otu_table_config.sh
+else
+echo "\
 source \$pipeline_path/03_otu_table.sh
-sh3=\$work_dir/03_otu_table/work				">$subwork_dir/03_otu_table_config.sh
+sh3=\$work_dir/03_otu_table/work				">>$subwork_dir/03_otu_table_config.sh
+fi
 
 echo "\
 source \$config_path/04_diversity_analysis_config.sh
@@ -83,6 +90,31 @@ source \$config_path/05_diff_taxa_analysis_config.sh
 # if you want to change something, copy the configurations you want to change and change it after this line
 source \$pipeline_path/05_diff_taxa_analysis.sh
 sh5=\$work_dir/05_diff_taxa_analysis/work  " >$subwork_dir/05_diff_taxa_analysis_config.sh
+
+if [ $supersample_num = $subsample_num ];then
+
+echo "\
+source $subwork_dir/00_all_config.sh
+[ -f $subwork_dir/filt.o ] && rm $subwork_dir/filt.o $subwork_dir/filt.e
+cp $pick_otu_summary $subwork_dir/sumOTUPerSample.txt
+source $subwork_dir/03_otu_table_config.sh
+qsub3=\`qsub -cwd -l vf=10G -q all.q -N $job_name\_03 -e \$sh3.e -o \$sh3.o -terse \$sh3.sh\`
+source $subwork_dir/04_diversity_analysis_config.sh
+cp $work_dir/04_diversity_analysis_config/rep_phylo.tre $subwork_dir/
+qsub4_2=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_04 -e \$sh4_2.e -o \$sh4_2.o -terse \$sh4_2.sh\`
+qsub4_3=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_04 -e \$sh4_3.e -o \$sh4_3.o -terse \$sh4_3.sh\`
+source $subwork_dir/05_diff_taxa_analysis_config.sh
+qsub5=\`qsub -cwd -l vf=10G -q all.q -N \$job_name\_05 -e \$sh5.e -o \$sh5.o -terse \$sh5.sh\`
+log='there still have some jobs to do'
+while [ -n \"\$log\" ];
+do
+    sleep 1m
+    echo 'waiting for all jobs done ...'
+    log=\$(qstat -j \$qsub4_2,\$qsub4_3,\$qsub5);
+done
+source  \$pipeline_path/subgroup_upload.sh	">$subwork_dir/pipeline.qsub
+
+else
 
 echo "\
 source $subwork_dir/00_all_config.sh
@@ -108,6 +140,8 @@ do
     log=\$(qstat -j \$qsub2,\$qsub3,\$qsub4_1,\$qsub4_2,\$qsub4_3,\$qsub5);
 done
 source  \$pipeline_path/subgroup_upload.sh  ">$subwork_dir/pipeline.qsub
+
+fi
 
 [ -f nohup.out ] && rm nohup.out
 cd $subwork_dir
